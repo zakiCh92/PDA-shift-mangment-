@@ -63,12 +63,12 @@
 
     <div id="appContainer" class="min-h-screen flex flex-col">
         
-        <!-- Header Section -->
+        <!-- Header -->
         <header class="bg-white border-b border-emerald-100 pt-8 pb-12 px-4 text-center shadow-md relative">
             <div class="absolute top-0 left-0 w-full h-1.5 bg-[#064e3b]"></div>
-            <div class="max-w-4xl mx-auto flex flex-col items-center text-center">
-                <div class="w-20 h-20 bg-[#064e3b] rounded-full shadow-xl border-4 border-white flex items-center justify-center mb-4">
-                    <span class="text-white text-3xl font-black tracking-widest font-sans italic leading-none">PDA</span>
+            <div class="max-w-4xl mx-auto flex flex-col items-center">
+                <div class="w-20 h-20 bg-[#064e3b] rounded-full shadow-xl border-4 border-white flex items-center justify-center mb-4 text-white text-3xl font-black italic tracking-widest font-sans leading-none">
+                    PDA
                 </div>
                 
                 <h1 class="text-3xl font-black text-emerald-950 uppercase tracking-tighter italic leading-none mb-4">Panneaux d'Algérie</h1>
@@ -83,7 +83,7 @@
 
         <main class="max-w-7xl mx-auto w-full px-4 pt-8 pb-16 flex-grow">
             
-            <!-- Real-time Status Area -->
+            <!-- Live Status (Upper Section) -->
             <div class="mb-10 bg-emerald-900 rounded-[3.5rem] p-8 text-white shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 border-b-8 border-yellow-500">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
                 <div class="relative z-10 text-center md:text-right">
@@ -92,18 +92,18 @@
                         <span>LIVE NOW (REAL-TIME)</span>
                     </div>
                     <div id="liveClock" class="text-6xl font-black tracking-tighter mb-1 font-mono leading-none italic latin-nums">00:00:00</div>
-                    <div id="liveDate" class="text-emerald-400 font-bold text-xs italic tracking-wide latin-nums">-- --- ----</div>
+                    <div id="liveDate" class="text-emerald-400 font-bold text-xs italic tracking-wide">-- --- ----</div>
                 </div>
 
                 <div class="relative z-10 bg-white/5 backdrop-blur-md px-10 py-6 rounded-[2.5rem] border border-white/10 flex flex-col items-center min-w-[280px] shadow-inner text-center">
                     <span class="text-emerald-200 font-bold text-[10px] mb-1 uppercase tracking-widest opacity-80 leading-none">الفريق العامل حالياً</span>
                     <div id="activeTeamNow" class="text-8xl font-black text-yellow-400 tracking-tighter drop-shadow-md leading-none py-2">--</div>
-                    <div id="activeShiftNow" class="mt-1 px-4 py-0.5 bg-yellow-400 text-emerald-900 rounded-full font-black text-[10px] uppercase tracking-widest leading-none">--</div>
+                    <div id="activeShiftNow" class="mt-1 px-4 py-0.5 bg-yellow-400 text-emerald-900 rounded-full font-black text-[10px] uppercase tracking-widest leading-none tracking-tight">--</div>
                 </div>
             </div>
 
-            <!-- Tab Toggles -->
-            <div class="flex justify-center mb-10 overflow-x-auto p-1">
+            <!-- Tab Buttons -->
+            <div class="flex justify-center mb-10 overflow-x-auto p-1 text-center">
                 <div class="inline-flex bg-white border border-emerald-100 p-1.5 rounded-[1.5rem] shadow-sm gap-1">
                     <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-btn active px-8 py-3 rounded-2xl font-bold transition-all text-xs md:text-sm">لوحة المتابعة</button>
                     <button onclick="switchTab('units')" id="btn-units" class="tab-btn px-8 py-3 rounded-2xl font-bold transition-all text-xs md:text-sm text-emerald-800">تفقد الوحدات</button>
@@ -111,7 +111,7 @@
                 </div>
             </div>
 
-            <!-- Tab: Dashboard -->
+            <!-- Dashboard Content -->
             <div id="tab-dashboard-content" class="animate-fade space-y-12">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 text-right">
                     <div class="lg:col-span-4 bg-white p-7 rounded-[3rem] border border-emerald-100 shadow-sm">
@@ -125,35 +125,35 @@
 
                 <div class="mb-2 flex items-center gap-3">
                     <div class="h-8 w-1.5 bg-emerald-600 rounded-full"></div>
-                    <h2 class="text-2xl font-black text-emerald-900 tracking-tight leading-none uppercase italic">توزيع الوحدات والعمال</h2>
+                    <h2 class="text-2xl font-black text-emerald-900 tracking-tight leading-none uppercase italic">توزيع الوحدات</h2>
                 </div>
                 
                 <div id="dashboardUnitsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-right"></div>
             </div>
 
-            <!-- Tab: Units -->
-            <div id="tab-units-content" class="hidden animate-fade space-y-6">
+            <!-- Units Detailed Content -->
+            <div id="tab-units-content" class="hidden animate-fade space-y-6 text-right">
                 <div id="fullUnitsContainer" class="space-y-4 max-w-4xl mx-auto"></div>
             </div>
 
-            <!-- Tab: Workers Registry -->
+            <!-- Workers Registry Content -->
             <div id="tab-workers-registry-content" class="hidden animate-fade space-y-8 text-right">
                 <div class="bg-white rounded-[3rem] border border-emerald-100 shadow-xl overflow-hidden">
-                    <div class="p-8 bg-emerald-50 border-b border-emerald-100 flex flex-col md:flex-row justify-between items-center gap-6 text-right">
+                    <div class="p-8 bg-emerald-50 border-b border-emerald-100 flex flex-col md:flex-row justify-between items-center gap-6">
                         <div>
                             <h2 class="text-xl font-black text-emerald-900 italic uppercase">سجل الموظفين الأبجدي</h2>
                             <span id="workerCountBadge" class="bg-emerald-900 text-white px-4 py-1 rounded-full text-[10px] font-black latin-nums pt-1 leading-none italic shadow-sm">-- عمال</span>
                         </div>
                         
                         <div class="relative w-full md:w-80">
-                            <input type="text" id="workerSearchInput" oninput="handleSearch()" placeholder="بحث عن اسم عامل..." class="search-input w-full p-4 pr-12 rounded-2xl border-2 border-emerald-100 bg-white text-sm font-bold focus:border-emerald-600 focus:outline-none transition-all shadow-inner text-right font-sans">
+                            <input type="text" id="workerSearchInput" oninput="handleSearch()" placeholder="بحث عن اسم عامل..." class="w-full p-4 pr-12 rounded-2xl border-2 border-emerald-100 bg-white text-sm font-bold focus:border-emerald-600 focus:outline-none transition-all shadow-inner text-right font-sans">
                             <div class="absolute inset-y-0 right-0 flex items-center pr-4 text-emerald-500 pointer-events-none text-xl">🔍</div>
                         </div>
                     </div>
                     <div class="overflow-x-auto text-right font-sans">
                         <table class="w-full text-right border-collapse min-w-[600px]">
                             <thead>
-                                <tr class="bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-widest border-b border-emerald-50">
+                                <tr class="bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-widest border-b border-emerald-50 text-right">
                                     <th class="p-5 text-right font-black">اسم العامل</th>
                                     <th class="p-5 text-right font-black">الوحدة</th>
                                     <th class="p-5 text-center font-black">الفريق</th>
@@ -174,16 +174,16 @@
                     <div>
                         <span id="m-role-badge" class="px-2 py-0.5 rounded text-[9px] font-black uppercase bg-emerald-600 mb-2 inline-block pt-1 leading-none italic shadow-sm leading-none">ROLE</span>
                         <h3 id="m-name" class="text-2xl font-black leading-tight italic">اسم العامل</h3>
-                        <p class="text-emerald-400 text-[9px] font-mono mt-1 opacity-70 tracking-widest uppercase italic leading-none">Personnel Profile Data</p>
+                        <p class="text-emerald-400 text-[9px] font-mono mt-1 opacity-70 tracking-widest uppercase italic leading-none">Official Digital ID Profile</p>
                     </div>
                     <button onclick="closeModal('workerModal')" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition text-xl leading-none">✕</button>
                 </div>
                 <div class="modal-body-content space-y-4 text-right">
-                    <!-- New Unit & Team Display -->
+                    <!-- Display Unit & Team -->
                     <div class="grid grid-cols-2 gap-3 mb-2">
                         <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 shadow-sm text-center">
                             <p class="text-[9px] font-black text-emerald-800/50 uppercase italic mb-1 leading-none">الوحدة</p>
-                            <p id="m-unit-text" class="font-black text-emerald-900 text-xs uppercase leading-tight pt-1">--</p>
+                            <p id="m-unit-text" class="font-black text-emerald-900 text-[11px] uppercase leading-tight pt-1">--</p>
                         </div>
                         <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 shadow-sm text-center">
                             <p class="text-[9px] font-black text-emerald-800/50 uppercase italic mb-1 leading-none">الفريق</p>
@@ -193,33 +193,32 @@
 
                     <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm text-right">
                         <div class="text-2xl">👷</div>
-                        <div>
-                            <p class="text-[9px] font-black text-slate-400 uppercase mb-1.5 italic leading-none pt-1">المهمة الحالية</p>
+                        <div class="flex-1">
+                            <p class="text-[9px] font-black text-slate-400 uppercase mb-1 italic leading-none pt-1">الوظيفة</p>
                             <p id="m-role-text" class="font-black text-emerald-950 text-base leading-none">--</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-4 p-4 bg-blue-50 rounded-2xl border border-blue-100 shadow-sm text-right">
                         <div class="text-2xl">📞</div>
-                        <div>
-                            <p class="text-[9px] font-black text-blue-400 uppercase mb-1.5 italic leading-none pt-1">رقم الاتصال</p>
+                        <div class="flex-1">
+                            <p class="text-[9px] font-black text-blue-400 uppercase mb-1 italic leading-none pt-1">رقم الهاتف</p>
                             <p id="m-phone" class="font-black text-blue-900 text-xl leading-none font-mono tracking-widest latin-nums leading-none">--</p>
                         </div>
                     </div>
                     <div class="flex items-center gap-4 p-4 bg-amber-50 rounded-2xl border border-amber-100 shadow-sm text-right">
                         <div class="text-2xl">📝</div>
                         <div class="flex-1 text-right">
-                            <p class="text-[9px] font-black text-amber-500 uppercase mb-1.5 italic leading-none pt-1">ملاحظات إدارية</p>
+                            <p class="text-[9px] font-black text-amber-500 uppercase mb-1 italic leading-none pt-1">ملاحظات إدارية</p>
                             <p id="m-notes" class="font-bold text-amber-900 text-xs italic leading-relaxed">--</p>
                         </div>
                     </div>
                 </div>
                 <div class="p-8 bg-slate-50 border-t border-slate-100">
-                    <button onclick="closeModal('workerModal')" class="w-full py-4 bg-emerald-900 text-white rounded-3xl font-black shadow-lg hover:bg-emerald-950 transition-all text-sm uppercase italic leading-none pt-1">إغلاق البطاقة</button>
+                    <button onclick="closeModal('workerModal')" class="w-full py-4 bg-emerald-900 text-white rounded-3xl font-black shadow-lg hover:bg-emerald-950 transition-all text-sm uppercase italic leading-none pt-1">إغلاق</button>
                 </div>
             </div>
         </div>
 
-        <!-- Dev Modal -->
         <div id="devModal" class="modal-fixed">
             <div class="modal-card text-center">
                 <div class="p-8 bg-slate-900 text-white relative">
@@ -256,7 +255,7 @@
                 </div>
                 
                 <div class="flex flex-col items-center cursor-pointer group" onclick="openDevModal()">
-                    <p class="text-[9px] font-bold text-slate-400 italic mb-1 leading-none uppercase tracking-tighter">تم تصميم وتطوير النظام بواسطة المهندس الميكانيكي</p>
+                    <p class="text-[9px] font-bold text-slate-400 mb-1 leading-none uppercase tracking-tighter">تم تصميم وتطوير النظام بواسطة المهندس الميكانيكي</p>
                     <p class="text-[11px] font-black text-slate-950 uppercase tracking-widest leading-none group-hover:text-emerald-700 transition-colors pt-0.5">شلوفي زكريا</p>
                     <div class="h-0.5 w-0 group-hover:w-16 bg-emerald-700 transition-all duration-300 mt-1"></div>
                 </div>
@@ -366,7 +365,7 @@
             { name: "بليلي فاتح", team: "D", role: "Operator", unit: "Saw", phone: "", notes: "" },
             { name: "حذيري أحسن", team: "D", role: "Assistant", unit: "Saw", phone: "", notes: "" },
             { name: "بوشواطة ع النور", team: "D", role: "Assistant", unit: "Saw", phone: "", notes: "" },
-            // Sanding (All Operators)
+            // Sanding (All are Operators)
             { name: "بلعيد محمد يسين", team: "A", role: "Operator", unit: "Sanding", phone: "", notes: "" },
             { name: "ناصر شعيب", team: "B", role: "Operator", unit: "Sanding", phone: "", notes: "" },
             { name: "مسعودي نور الدين", team: "B", role: "Operator", unit: "Sanding", phone: "", notes: "" },
@@ -405,7 +404,7 @@
             { name: "سلطاني محمد", team: "D", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
             { name: "ساسي نور الدين", team: "D", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
             { name: "نواري ع الحميد", team: "D", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            // Forklift (All Drivers)
+            // Forklift (All are Drivers)
             { name: "هديمي إيهاب", team: "A", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
             { name: "بوزينة أحسن", team: "A", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
             { name: "مرزوق خير الدين", team: "A", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
@@ -434,6 +433,7 @@
         window.onload = function() {
             const now = new Date();
             let logicalDate = new Date(now);
+            // التقويم يبدأ بيوم أمس إذا كنا قبل 8 صباحاً
             if (now.getHours() < 8) logicalDate.setDate(logicalDate.getDate() - 1);
             document.getElementById('dateInput').value = logicalDate.toISOString().split('T')[0];
             
@@ -448,14 +448,32 @@
                 document.getElementById('liveDate').textContent = now.toLocaleDateString(latinLocale, { dateStyle: 'full' });
                 
                 const hour = now.getHours();
-                let type = (hour >= 8 && hour < 16) ? 'صباحي' : (hour >= 16 || hour < 0) ? 'مسائي' : 'ليلي';
-                let calcDate = (hour < 8) ? new Date(now.getTime() - 86400000) : now;
+                // تعريف الوردية بناءً على الوقت الحقيقي
+                let shiftType = '';
+                let shiftLabel = '';
+                
+                if (hour >= 8 && hour < 16) { 
+                    shiftType = 'صباحي'; 
+                    shiftLabel = 'S2 (صباحي)';
+                } else if (hour >= 16 || hour < 0) { 
+                    shiftType = 'مسائي'; 
+                    shiftLabel = 'S3 (مسائي)';
+                } else { 
+                    shiftType = 'ليلي'; 
+                    shiftLabel = 'S1 (ليلي)';
+                }
+
+                // الحساب المنطقي للفريق النشط (وردية الليل تتبع منطقياً يوم الأمس)
+                let calculationDate = new Date(now);
+                if (hour < 8) calculationDate.setDate(calculationDate.getDate() - 1);
+                
                 let activeLetter = '--';
-                TEAMS.forEach(t => { if (getShiftInfo(t, calcDate.toISOString().split('T')[0]).type === type) activeLetter = t; });
+                TEAMS.forEach(t => { 
+                    if (getShiftInfo(t, calculationDate.toLocaleDateString('en-CA')).type === shiftType) activeLetter = t; 
+                });
                 
                 document.getElementById('activeTeamNow').textContent = activeLetter;
-                let label = type === 'ليلي' ? 'S1' : type === 'صباحي' ? 'S2' : 'S3';
-                document.getElementById('activeShiftNow').textContent = label + " (" + type + ")";
+                document.getElementById('activeShiftNow').textContent = shiftLabel;
             }, 1000);
         }
 
@@ -501,7 +519,7 @@
                     grid.innerHTML += `
                         <div class="shift-card flex items-center justify-between p-4 rounded-2xl ${item.data.class} shadow-sm border animate-fade">
                             <div class="flex items-center gap-4">
-                                <span class="bg-white/50 px-2 py-0.5 rounded-lg font-black text-[9px] latin-nums leading-none pt-1">${item.data.s}</span>
+                                <span class="bg-white/50 px-2 py-0.5 rounded-lg font-black text-[9px] latin-nums">${item.data.s}</span>
                                 <div class="font-black text-lg leading-none uppercase italic pt-1">${item.data.type}</div>
                             </div>
                             <div class="flex items-center gap-3 text-left">
@@ -524,13 +542,13 @@
                         <div class="flex justify-between items-center text-[9px] font-black uppercase ${item.cls} p-2 rounded-xl border border-white/50 shadow-sm leading-none italic pt-3 pb-2">
                             <div class="flex flex-col items-start text-right">
                                 <span>${item.label} (فريق ${item.team})</span>
-                                <span class="text-[7px] opacity-50 font-bold mt-0.5">${item.time}</span>
+                                <span class="text-[7px] opacity-50 font-bold mt-0.5 font-sans">${item.time}</span>
                             </div>
                         </div>
                         <div class="space-y-1 pr-3 text-right">
                             ${getW(item.team).map(w => {
                                 const roleCode = w.role === 'Operator' ? 'OP' : w.role === 'Driver' ? 'DR' : 'AS';
-                                return `<div onclick="openWorkerCard('${w.name}')" class="worker-clickable p-1.5 rounded-lg text-[10px] font-bold text-slate-700 flex justify-between bg-white border-r-4 border-emerald-500 shadow-sm leading-none items-center"><span>• ${w.name}</span><span class="text-[7px] opacity-40 uppercase font-mono italic ml-1 leading-none pt-1">${roleCode}</span></div>`
+                                return `<div onclick="openWorkerCard('${w.name}')" class="worker-clickable p-1.5 rounded-lg text-[10px] font-bold text-slate-700 flex justify-between bg-white border-r-4 border-emerald-500 shadow-sm leading-none items-center"><span>• ${w.name}</span><span class="text-[7px] opacity-40 uppercase font-mono italic ml-1 leading-none pt-1 font-sans">${roleCode}</span></div>`
                             }).join('') || '<p class="text-[8px] text-slate-300 italic py-1 pr-2">شاغر</p>'}
                         </div>
                     </div>`).join('');
@@ -545,11 +563,11 @@
                     const tid = `t-cont-${uIdx}-${tIdx}`;
                     return `<div class="mb-2 border border-slate-50 rounded-2xl overflow-hidden text-right"><div onclick="toggleAccordion('${tid}')" class="collapsible-header flex justify-between items-center p-4 bg-slate-50/50 text-slate-700 font-bold text-sm"><div class="flex items-center gap-2"><span>فريق ${t === 'Misc' ? 'أخرى' : t}</span></div><span class="chevron text-[8px] opacity-30 font-sans">▶</span></div><div id="${tid}" class="collapsible-content bg-white p-4 text-right"><div class="space-y-2">${ws.map(w => {
                         const roleCode = w.role === 'Operator' ? 'OP' : w.role === 'Driver' ? 'DR' : 'AS';
-                        return `<div onclick="openWorkerCard('${w.name}')" class="worker-clickable p-3 bg-slate-50 border rounded-xl flex justify-between items-center font-bold text-xs"><span>${w.name}</span><span class="text-[9px] px-2 py-0.5 bg-white border rounded opacity-60 italic uppercase leading-none pt-1">${roleCode}</span></div>`
+                        return `<div onclick="openWorkerCard('${w.name}')" class="worker-clickable p-3 bg-slate-50 border rounded-xl flex justify-between items-center font-bold text-xs"><span>${w.name}</span><span class="text-[9px] px-2 py-0.5 bg-white border rounded opacity-60 italic uppercase leading-none pt-1 font-sans">${roleCode}</span></div>`
                     }).join('')}</div></div></div>`;
                 }).join('');
                 const uid = `u-cont-${uIdx}`;
-                fullContainer.innerHTML += `<div class="bg-white rounded-[2.5rem] border border-emerald-50 shadow-md overflow-hidden animate-fade"><div onclick="toggleAccordion('${uid}')" class="collapsible-header p-6 flex justify-between items-center border-b border-emerald-50 text-right"><h3 class="text-xl font-black text-emerald-950 uppercase tracking-tighter italic leading-none pt-1">${u}</h3><div class="flex items-center gap-3 leading-none"><span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-[9px] font-black italic uppercase leading-none">${WORKERS.filter(w=>w.unit===u).length} عمال</span><span class="chevron text-lg opacity-30 leading-none font-sans">▶</span></div></div><div id="${uid}" class="collapsible-content p-4 bg-slate-50/20">${teamsHtml}</div></div>`;
+                fullContainer.innerHTML += `<div class="bg-white rounded-[2.5rem] border border-emerald-50 shadow-md overflow-hidden animate-fade"><div onclick="toggleAccordion('${uid}')" class="collapsible-header p-6 flex justify-between items-center border-b border-emerald-50 text-right"><h3 class="text-xl font-black text-emerald-950 uppercase tracking-tighter italic leading-none pt-1">${u}</h3><div class="flex items-center gap-3 leading-none"><span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-[9px] font-black italic uppercase leading-none font-sans">${WORKERS.filter(w=>w.unit===u).length} عمال</span><span class="chevron text-lg opacity-30 leading-none font-sans">▶</span></div></div><div id="${uid}" class="collapsible-content p-4 bg-slate-50/20">${teamsHtml}</div></div>`;
             });
 
             renderAlphabeticalRegistry();
@@ -570,7 +588,7 @@
                 const row = document.createElement('tr');
                 row.className = "border-b border-emerald-50 hover:bg-emerald-50/50 transition-all worker-clickable text-right";
                 row.onclick = () => openWorkerCard(w.name);
-                row.innerHTML = `<td class="p-4 font-black text-emerald-900 text-right">${w.name}</td><td class="p-4 text-[10px] text-slate-500 italic uppercase text-right">${w.unit}</td><td class="p-4 text-center"><span class="bg-white border-2 border-emerald-100 text-emerald-700 px-3 py-1 rounded-xl text-xs font-black latin-nums italic leading-none pt-1">T ${w.team}</span></td><td class="p-4 text-right"><span class="text-[9px] font-black uppercase text-slate-400 italic leading-none">${roleText}</span></td>`;
+                row.innerHTML = `<td class="p-4 font-black text-emerald-900 text-right">${w.name}</td><td class="p-4 text-[10px] text-slate-500 italic uppercase text-right">${w.unit}</td><td class="p-4 text-center"><span class="bg-white border-2 border-emerald-100 text-emerald-700 px-3 py-1 rounded-xl text-xs font-black latin-nums italic leading-none pt-1 font-sans">T ${w.team}</span></td><td class="p-4 text-right"><span class="text-[9px] font-black uppercase text-slate-400 italic leading-none">${roleText}</span></td>`;
                 tableBody.appendChild(row);
             });
         }
