@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Panneaux d'Algérie - v3.3.0</title>
+    <title>Panneaux d'Algérie - v3.5.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
@@ -63,10 +63,10 @@
 
     <div id="appContainer" class="min-h-screen flex flex-col">
         
-        <!-- Header -->
+        <!-- Header Section -->
         <header class="bg-white border-b border-emerald-100 pt-8 pb-12 px-4 text-center shadow-md relative">
             <div class="absolute top-0 left-0 w-full h-1.5 bg-[#064e3b]"></div>
-            <div class="max-w-4xl mx-auto flex flex-col items-center">
+            <div class="max-w-4xl mx-auto flex flex-col items-center text-center">
                 <div class="w-20 h-20 bg-[#064e3b] rounded-full shadow-xl border-4 border-white flex items-center justify-center mb-4">
                     <span class="text-white text-3xl font-black tracking-widest font-sans italic leading-none">PDA</span>
                 </div>
@@ -75,16 +75,17 @@
                 
                 <div class="space-y-1">
                     <p class="text-lg font-bold text-emerald-800 leading-none">برنامج متابعة عمال الوحدات و الورديات</p>
-                    <p class="text-xs font-bold text-emerald-600 opacity-80 leading-none italic uppercase">Unit Workers and Shifts Monitoring Program</p>
-                    <p class="text-xs font-bold text-emerald-600 opacity-80 leading-none italic uppercase">Suivi des travailleurs des unités et des équipes</p>
+                    <p class="text-[11px] font-bold text-emerald-600 opacity-80 leading-none italic uppercase">Unit Workers and Shifts Monitoring Program</p>
+                    <p class="text-[11px] font-bold text-emerald-600 opacity-80 leading-none italic uppercase">Suivi des travailleurs des unités et des équipes</p>
                 </div>
             </div>
         </header>
 
         <main class="max-w-7xl mx-auto w-full px-4 pt-8 pb-16 flex-grow">
             
-            <!-- Real-time Status -->
+            <!-- Real-time Status Area -->
             <div class="mb-10 bg-emerald-900 rounded-[3.5rem] p-8 text-white shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 border-b-8 border-yellow-500">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
                 <div class="relative z-10 text-center md:text-right">
                     <div class="flex items-center gap-2 mb-1 justify-center md:justify-start text-emerald-300 font-black uppercase text-[9px] tracking-widest leading-none">
                         <span class="w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
@@ -97,11 +98,11 @@
                 <div class="relative z-10 bg-white/5 backdrop-blur-md px-10 py-6 rounded-[2.5rem] border border-white/10 flex flex-col items-center min-w-[280px] shadow-inner text-center">
                     <span class="text-emerald-200 font-bold text-[10px] mb-1 uppercase tracking-widest opacity-80 leading-none">الفريق العامل حالياً</span>
                     <div id="activeTeamNow" class="text-8xl font-black text-yellow-400 tracking-tighter drop-shadow-md leading-none py-2">--</div>
-                    <div id="activeShiftNow" class="mt-1 px-4 py-0.5 bg-yellow-400 text-emerald-900 rounded-full font-black text-[10px] uppercase tracking-widest">--</div>
+                    <div id="activeShiftNow" class="mt-1 px-4 py-0.5 bg-yellow-400 text-emerald-900 rounded-full font-black text-[10px] uppercase tracking-widest leading-none">--</div>
                 </div>
             </div>
 
-            <!-- Tab Buttons -->
+            <!-- Tab Toggles -->
             <div class="flex justify-center mb-10 overflow-x-auto p-1">
                 <div class="inline-flex bg-white border border-emerald-100 p-1.5 rounded-[1.5rem] shadow-sm gap-1">
                     <button onclick="switchTab('dashboard')" id="btn-dashboard" class="tab-btn active px-8 py-3 rounded-2xl font-bold transition-all text-xs md:text-sm">لوحة المتابعة</button>
@@ -112,24 +113,25 @@
 
             <!-- Tab: Dashboard -->
             <div id="tab-dashboard-content" class="animate-fade space-y-12">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    <div class="lg:col-span-4 bg-white p-7 rounded-[3rem] border border-emerald-100 shadow-sm text-right">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 text-right">
+                    <div class="lg:col-span-4 bg-white p-7 rounded-[3rem] border border-emerald-100 shadow-sm">
                         <label class="block text-[10px] font-black text-slate-400 mb-3 uppercase tracking-widest leading-none mr-2 italic">معاينة اليوم الصناعي</label>
                         <input type="date" id="dateInput" onchange="refreshUI()" class="w-full p-4 rounded-2xl border-2 border-slate-50 bg-slate-50 font-black text-xl text-center focus:border-emerald-700 outline-none transition-all latin-nums">
                         <div id="dateTextDisplay" class="mt-4 text-center font-bold text-emerald-800 text-[11px] italic leading-none latin-nums"></div>
                     </div>
+                    <!-- Sequential Shifts Vertical Order -->
                     <div id="shiftGrid" class="lg:col-span-8 flex flex-col gap-3"></div>
                 </div>
 
                 <div class="mb-2 flex items-center gap-3">
                     <div class="h-8 w-1.5 bg-emerald-600 rounded-full"></div>
-                    <h2 class="text-2xl font-black text-emerald-900 tracking-tight leading-none uppercase italic">توزيع الوحدات (اليوم الصناعي)</h2>
+                    <h2 class="text-2xl font-black text-emerald-900 tracking-tight leading-none uppercase italic">توزيع الوحدات والعمال</h2>
                 </div>
                 
                 <div id="dashboardUnitsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-right"></div>
             </div>
 
-            <!-- Tab: Units Detailed -->
+            <!-- Tab: Units -->
             <div id="tab-units-content" class="hidden animate-fade space-y-6">
                 <div id="fullUnitsContainer" class="space-y-4 max-w-4xl mx-auto"></div>
             </div>
@@ -137,18 +139,25 @@
             <!-- Tab: Workers Registry -->
             <div id="tab-workers-registry-content" class="hidden animate-fade space-y-8 text-right">
                 <div class="bg-white rounded-[3rem] border border-emerald-100 shadow-xl overflow-hidden">
-                    <div class="p-8 bg-emerald-50 border-b border-emerald-100 flex justify-between items-center">
-                        <h2 class="text-xl font-black text-emerald-900 italic uppercase">سجل الموظفين الأبجدي</h2>
-                        <span id="workerCountBadge" class="bg-emerald-900 text-white px-4 py-1 rounded-full text-xs font-black latin-nums pt-1 leading-none italic">-- عمال</span>
+                    <div class="p-8 bg-emerald-50 border-b border-emerald-100 flex flex-col md:flex-row justify-between items-center gap-6 text-right">
+                        <div>
+                            <h2 class="text-xl font-black text-emerald-900 italic uppercase">سجل الموظفين الأبجدي</h2>
+                            <span id="workerCountBadge" class="bg-emerald-900 text-white px-4 py-1 rounded-full text-[10px] font-black latin-nums pt-1 leading-none italic shadow-sm">-- عمال</span>
+                        </div>
+                        
+                        <div class="relative w-full md:w-80">
+                            <input type="text" id="workerSearchInput" oninput="handleSearch()" placeholder="بحث عن اسم عامل..." class="search-input w-full p-4 pr-12 rounded-2xl border-2 border-emerald-100 bg-white text-sm font-bold focus:border-emerald-600 focus:outline-none transition-all shadow-inner text-right font-sans">
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-4 text-emerald-500 pointer-events-none text-xl">🔍</div>
+                        </div>
                     </div>
-                    <div class="overflow-x-auto">
+                    <div class="overflow-x-auto text-right font-sans">
                         <table class="w-full text-right border-collapse min-w-[600px]">
                             <thead>
                                 <tr class="bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-widest border-b border-emerald-50">
-                                    <th class="p-5">اسم العامل</th>
-                                    <th class="p-5 text-right">الوحدة</th>
-                                    <th class="p-5 text-center">الفريق</th>
-                                    <th class="p-5 text-right">الوظيفة</th>
+                                    <th class="p-5 text-right font-black">اسم العامل</th>
+                                    <th class="p-5 text-right font-black">الوحدة</th>
+                                    <th class="p-5 text-center font-black">الفريق</th>
+                                    <th class="p-5 text-right font-black">الوظيفة</th>
                                 </tr>
                             </thead>
                             <tbody id="alphabeticalWorkerTable" class="text-sm font-bold text-slate-700"></tbody>
@@ -156,7 +165,6 @@
                     </div>
                 </div>
             </div>
-
         </main>
 
         <!-- Modals -->
@@ -164,83 +172,98 @@
             <div class="modal-card">
                 <div class="p-8 bg-emerald-900 text-white flex justify-between items-start text-right">
                     <div>
-                        <span id="m-role-badge" class="px-2 py-0.5 rounded text-[9px] font-black uppercase bg-emerald-600 mb-2 inline-block pt-1 leading-none italic leading-none pt-1 shadow-sm">ROLE</span>
+                        <span id="m-role-badge" class="px-2 py-0.5 rounded text-[9px] font-black uppercase bg-emerald-600 mb-2 inline-block pt-1 leading-none italic shadow-sm leading-none">ROLE</span>
                         <h3 id="m-name" class="text-2xl font-black leading-tight italic">اسم العامل</h3>
                         <p class="text-emerald-400 text-[9px] font-mono mt-1 opacity-70 tracking-widest uppercase italic leading-none">Personnel Profile Data</p>
                     </div>
-                    <button onclick="closeModal('workerModal')" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition text-xl">✕</button>
+                    <button onclick="closeModal('workerModal')" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition text-xl leading-none">✕</button>
                 </div>
-                <div class="modal-body-content space-y-5">
-                    <div class="flex items-center gap-4 p-4 bg-emerald-50 rounded-2xl border border-emerald-100 text-right">
+                <div class="modal-body-content space-y-4 text-right">
+                    <!-- New Unit & Team Display -->
+                    <div class="grid grid-cols-2 gap-3 mb-2">
+                        <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 shadow-sm text-center">
+                            <p class="text-[9px] font-black text-emerald-800/50 uppercase italic mb-1 leading-none">الوحدة</p>
+                            <p id="m-unit-text" class="font-black text-emerald-900 text-xs uppercase leading-tight pt-1">--</p>
+                        </div>
+                        <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 shadow-sm text-center">
+                            <p class="text-[9px] font-black text-emerald-800/50 uppercase italic mb-1 leading-none">الفريق</p>
+                            <p id="m-team-text" class="font-black text-emerald-900 text-base uppercase leading-none pt-1">--</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm text-right">
                         <div class="text-2xl">👷</div>
                         <div>
-                            <p class="text-[9px] font-black text-emerald-800/50 uppercase mb-1.5 italic leading-none">المهمة</p>
-                            <p id="m-role-text" class="font-black text-emerald-900 text-base leading-none">--</p>
+                            <p class="text-[9px] font-black text-slate-400 uppercase mb-1.5 italic leading-none pt-1">المهمة الحالية</p>
+                            <p id="m-role-text" class="font-black text-emerald-950 text-base leading-none">--</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-4 p-4 bg-blue-50 rounded-2xl border border-blue-100 text-right">
+                    <div class="flex items-center gap-4 p-4 bg-blue-50 rounded-2xl border border-blue-100 shadow-sm text-right">
                         <div class="text-2xl">📞</div>
                         <div>
-                            <p class="text-[9px] font-black text-blue-800/50 uppercase mb-1.5 italic leading-none">رقم الاتصال</p>
-                            <p id="m-phone" class="font-black text-blue-900 text-xl leading-none font-mono tracking-widest latin-nums">--</p>
+                            <p class="text-[9px] font-black text-blue-400 uppercase mb-1.5 italic leading-none pt-1">رقم الاتصال</p>
+                            <p id="m-phone" class="font-black text-blue-900 text-xl leading-none font-mono tracking-widest latin-nums leading-none">--</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-4 p-4 bg-amber-50 rounded-2xl border border-amber-100 text-right">
+                    <div class="flex items-center gap-4 p-4 bg-amber-50 rounded-2xl border border-amber-100 shadow-sm text-right">
                         <div class="text-2xl">📝</div>
-                        <div class="flex-1">
-                            <p class="text-[9px] font-black text-amber-800/50 uppercase mb-1.5 italic leading-none">ملاحظات إدارية</p>
+                        <div class="flex-1 text-right">
+                            <p class="text-[9px] font-black text-amber-500 uppercase mb-1.5 italic leading-none pt-1">ملاحظات إدارية</p>
                             <p id="m-notes" class="font-bold text-amber-900 text-xs italic leading-relaxed">--</p>
                         </div>
                     </div>
                 </div>
                 <div class="p-8 bg-slate-50 border-t border-slate-100">
-                    <button onclick="closeModal('workerModal')" class="w-full py-4 bg-emerald-900 text-white rounded-3xl font-black shadow-lg transition-all text-sm uppercase italic">إغلاق</button>
+                    <button onclick="closeModal('workerModal')" class="w-full py-4 bg-emerald-900 text-white rounded-3xl font-black shadow-lg hover:bg-emerald-950 transition-all text-sm uppercase italic leading-none pt-1">إغلاق البطاقة</button>
                 </div>
             </div>
         </div>
 
+        <!-- Dev Modal -->
         <div id="devModal" class="modal-fixed">
-            <div class="modal-card">
-                <div class="p-8 bg-slate-900 text-white text-center relative">
-                    <button onclick="closeModal('devModal')" class="absolute top-6 left-6 text-white/50 hover:text-white transition">✕</button>
+            <div class="modal-card text-center">
+                <div class="p-8 bg-slate-900 text-white relative">
+                    <button onclick="closeModal('devModal')" class="absolute top-6 left-6 text-white/50 hover:text-white transition leading-none font-bold font-sans">✕</button>
                     <div class="w-20 h-20 rounded-full bg-slate-800 mx-auto mb-4 border-2 border-slate-700 flex items-center justify-center text-4xl shadow-inner">👨‍💻</div>
                     <h3 class="text-2xl font-black italic uppercase">Cheloufi Zakaria</h3>
                     <p class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mt-1 italic leading-none">Mechanical Engineer</p>
                 </div>
                 <div class="p-8 space-y-4">
-                    <div class="bg-slate-50 p-6 rounded-[2.5rem] border border-slate-100 text-center space-y-4 shadow-inner">
-                        <div class="font-black text-slate-800 italic uppercase leading-none">Panneaux d'Algérie</div>
+                    <div class="bg-slate-50 p-6 rounded-[2.5rem] border border-slate-100 text-center space-y-4 shadow-inner text-right">
+                        <div class="font-black text-slate-800 italic uppercase leading-none pt-1 text-center">Panneaux d'Algérie</div>
                         <div class="h-px w-12 bg-slate-200 mx-auto"></div>
-                        <div class="space-y-4">
+                        <div class="space-y-4 text-center">
                             <div class="flex flex-col items-center gap-1">
                                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic leading-none">Tel / WhatsApp</span>
                                 <a href="tel:0666434372" class="text-xl font-black text-slate-900 latin-nums tracking-widest leading-none">0666434372</a>
                             </div>
                             <div class="flex flex-col items-center gap-1">
                                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic leading-none">E-mail</span>
-                                <a href="mailto:zakaria.cheloufi@gmail.com" class="text-sm font-bold text-indigo-600 underline">zakaria.cheloufi@gmail.com</a>
+                                <a href="mailto:zakaria.cheloufi@gmail.com" class="text-sm font-bold text-indigo-600 underline leading-none">zakaria.cheloufi@gmail.com</a>
                             </div>
                         </div>
                     </div>
-                    <button onclick="closeModal('devModal')" class="w-full py-5 bg-slate-900 text-white rounded-3xl font-black shadow-lg transition-all text-sm uppercase italic">تم</button>
+                    <button onclick="closeModal('devModal')" class="w-full py-5 bg-slate-900 text-white rounded-3xl font-black shadow-lg uppercase italic leading-none pt-1">إغلاق</button>
                 </div>
             </div>
         </div>
 
         <footer class="bg-white text-slate-500 py-16 px-6 text-center border-t border-emerald-100 mt-auto">
-            <div class="max-w-4xl mx-auto flex flex-col items-center">
+            <div class="max-w-4xl mx-auto flex flex-col items-center text-center">
                 <div class="mb-12 bg-red-50 border border-red-100 p-6 rounded-[2.5rem] inline-block shadow-sm">
-                    <p class="text-red-700 font-black text-xs mb-1 italic leading-none uppercase">⚠️ Security Notice</p>
-                    <p class="text-red-600 font-bold text-[10px] leading-relaxed max-w-sm">هذا البرنامج داخلي يخص شركة Panneaux d'Algérie ويمنع أي تعديل غير مصرح به أو الدخول لغير المخولين.</p>
+                    <p class="text-red-700 font-black text-xs mb-1 italic leading-none uppercase tracking-widest">⚠️ Security Notice</p>
+                    <p class="text-red-600 font-bold text-[10px] leading-relaxed max-w-sm">هذا البرنامج داخلي يخص شركة Panneaux d'Algérie ويمنع أي تعديل غير مصرح به.</p>
                 </div>
+                
                 <div class="flex flex-col items-center cursor-pointer group" onclick="openDevModal()">
-                    <p class="text-[9px] font-bold text-slate-400 italic mb-1 leading-none">تم تصميم وتطوير النظام بواسطة المهندس الميكانيكي</p>
-                    <p class="text-[11px] font-black text-slate-950 uppercase tracking-widest leading-none group-hover:text-emerald-700 transition-colors">شلوفي زكريا</p>
+                    <p class="text-[9px] font-bold text-slate-400 italic mb-1 leading-none uppercase tracking-tighter">تم تصميم وتطوير النظام بواسطة المهندس الميكانيكي</p>
+                    <p class="text-[11px] font-black text-slate-950 uppercase tracking-widest leading-none group-hover:text-emerald-700 transition-colors pt-0.5">شلوفي زكريا</p>
                     <div class="h-0.5 w-0 group-hover:w-16 bg-emerald-700 transition-all duration-300 mt-1"></div>
                 </div>
-                <div class="mt-8 bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-100 inline-flex items-center gap-3 shadow-sm">
-                    <span class="text-[9px] font-black text-emerald-800 opacity-60 uppercase tracking-tighter italic leading-none">Industrial System Update:</span>
-                    <span class="text-xs font-black text-emerald-700 latin-nums leading-none pt-1 italic">v3.3.0 - 27/12/2025</span>
+
+                <div class="mt-8 bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-100 inline-flex items-center gap-3">
+                    <span class="text-[9px] font-black text-emerald-800 opacity-60 uppercase tracking-tighter italic">Version:</span>
+                    <span class="text-xs font-black text-emerald-700 latin-nums leading-none pt-1 italic">v3.5.0 - 27/12/2025</span>
                 </div>
             </div>
         </footer>
@@ -351,6 +374,13 @@
             { name: "العمري بلال", team: "C", role: "Operator", unit: "Sanding", phone: "", notes: "" },
             { name: "معلق آسامة", team: "D", role: "Operator", unit: "Sanding", phone: "", notes: "" },
             { name: "بن تومي محمد", team: "D", role: "Operator", unit: "Sanding", phone: "", notes: "" },
+            // Quality Control
+            { name: "يوبي نور الدين", team: "A", role: "Operator", unit: "Quality Control", phone: "", notes: "" },
+            { name: "قواسم عبدو", team: "B", role: "Operator", unit: "Quality Control", phone: "", notes: "" },
+            { name: "منصري ص ماسينيسا", team: "C", role: "Operator", unit: "Quality Control", phone: "", notes: "" },
+            { name: "حو أحمد", team: "D", role: "Operator", unit: "Quality Control", phone: "", notes: "" },
+            { name: "معيز صبرينة", team: "Misc", role: "Assistant", unit: "Quality Control", phone: "", notes: "" },
+            { name: "أوشكديد يسمينة", team: "Misc", role: "Assistant", unit: "Quality Control", phone: "", notes: "" },
             // Melamine
             { name: "سبتي هشام", team: "A", role: "Operator", unit: "Melamine", phone: "", notes: "" },
             { name: "طيبي محمد الأمين", team: "A", role: "Operator", unit: "Melamine", phone: "", notes: "" },
@@ -375,14 +405,7 @@
             { name: "سلطاني محمد", team: "D", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
             { name: "ساسي نور الدين", team: "D", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
             { name: "نواري ع الحميد", team: "D", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            // Quality Control (RESTORED)
-            { name: "يوبي نور الدين", team: "A", role: "Operator", unit: "Quality Control", phone: "", notes: "" },
-            { name: "قواسم عبدو", team: "B", role: "Operator", unit: "Quality Control", phone: "", notes: "" },
-            { name: "منصري ص ماسينيسا", team: "C", role: "Operator", unit: "Quality Control", phone: "", notes: "" },
-            { name: "حو أحمد", team: "D", role: "Operator", unit: "Quality Control", phone: "", notes: "" },
-            { name: "معيز صبرينة", team: "Misc", role: "Assistant", unit: "Quality Control", phone: "", notes: "" },
-            { name: "أوشكديد يسمينة", team: "Misc", role: "Assistant", unit: "Quality Control", phone: "", notes: "" },
-            // Forklift Drivers (All Drivers)
+            // Forklift (All Drivers)
             { name: "هديمي إيهاب", team: "A", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
             { name: "بوزينة أحسن", team: "A", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
             { name: "مرزوق خير الدين", team: "A", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
@@ -446,7 +469,7 @@
             if (cyclePos < 2) return { type: 'صباحي', class: 'shift-morning', s: 'S2', time: '08:00/16:00' };
             if (cyclePos < 4) return { type: 'مسائي', class: 'shift-evening', s: 'S3', time: '16:00/00:00' };
             if (cyclePos < 6) return { type: 'ليلي', class: 'shift-night', s: 'S1', time: '00:00/08:00' };
-            return { type: 'راحة', class: 'shift-rest', s: 'OFF', time: 'يوم كامل' };
+            return { type: 'راحة', class: 'shift-rest', s: 'OFF', time: 'يوم راحة' };
         }
 
         function toggleAccordion(id) {
@@ -478,12 +501,12 @@
                     grid.innerHTML += `
                         <div class="shift-card flex items-center justify-between p-4 rounded-2xl ${item.data.class} shadow-sm border animate-fade">
                             <div class="flex items-center gap-4">
-                                <span class="bg-white/50 px-2 py-0.5 rounded-lg font-black text-[9px] latin-nums">${item.data.s}</span>
-                                <div class="font-black text-lg leading-none uppercase italic">${item.data.type}</div>
+                                <span class="bg-white/50 px-2 py-0.5 rounded-lg font-black text-[9px] latin-nums leading-none pt-1">${item.data.s}</span>
+                                <div class="font-black text-lg leading-none uppercase italic pt-1">${item.data.type}</div>
                             </div>
-                            <div class="flex items-center gap-3">
-                                <span class="text-[9px] opacity-60 font-bold latin-nums italic leading-none">${item.data.time}</span>
-                                <div class="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center font-black text-xl italic">${item.letter}</div>
+                            <div class="flex items-center gap-3 text-left">
+                                <span class="text-[9px] opacity-60 font-bold latin-nums italic leading-none pt-1">${item.data.time}</span>
+                                <div class="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center font-black text-xl italic pt-1">${item.letter}</div>
                             </div>
                         </div>`;
                 });
@@ -493,22 +516,25 @@
             UNITS.forEach(u => {
                 const getW = (teamL) => WORKERS.filter(w => w.unit === u && w.team === teamL);
                 let shiftsContent = [
-                    { label: 'S2 الصباحي', team: activeT['صباحي'], cls: 'text-blue-600 bg-blue-50', s: 'S2' },
-                    { label: 'S3 المسائي', team: activeT['مسائي'], cls: 'text-amber-600 bg-amber-50', s: 'S3' },
-                    { label: 'S1 الليلي', team: activeT['ليلي'], cls: 'text-purple-600 bg-purple-50', s: 'S1' }
+                    { label: 'S2 الصباحي', team: activeT['صباحي'], cls: 'text-blue-600 bg-blue-50', s: 'S2', time: '08:00/16:00' },
+                    { label: 'S3 المسائي', team: activeT['مسائي'], cls: 'text-amber-600 bg-amber-50', s: 'S3', time: '16:00/00:00' },
+                    { label: 'S1 الليلي', team: activeT['ليلي'], cls: 'text-purple-600 bg-purple-50', s: 'S1', time: '00:00/08:00' }
                 ].map(item => `
-                    <div class="space-y-2">
-                        <div class="flex justify-between items-center text-[9px] font-black uppercase ${item.cls} p-2 rounded-xl border border-white/50 shadow-sm leading-none italic">
-                            <span><small class="text-[7px] bg-white/40 px-1 rounded mr-1">${item.s}</small> ${item.label} (فريق ${item.team})</span>
+                    <div class="space-y-2 text-right">
+                        <div class="flex justify-between items-center text-[9px] font-black uppercase ${item.cls} p-2 rounded-xl border border-white/50 shadow-sm leading-none italic pt-3 pb-2">
+                            <div class="flex flex-col items-start text-right">
+                                <span>${item.label} (فريق ${item.team})</span>
+                                <span class="text-[7px] opacity-50 font-bold mt-0.5">${item.time}</span>
+                            </div>
                         </div>
-                        <div class="space-y-1 pr-3">
+                        <div class="space-y-1 pr-3 text-right">
                             ${getW(item.team).map(w => {
                                 const roleCode = w.role === 'Operator' ? 'OP' : w.role === 'Driver' ? 'DR' : 'AS';
-                                return `<div onclick="openWorkerCard('${w.name}')" class="worker-clickable p-1.5 rounded-lg text-[10px] font-bold text-slate-700 flex justify-between bg-white border-r-4 border-emerald-500 shadow-sm leading-none items-center"><span>• ${w.name}</span><span class="text-[7px] opacity-40 uppercase font-mono italic ml-1">${roleCode}</span></div>`
+                                return `<div onclick="openWorkerCard('${w.name}')" class="worker-clickable p-1.5 rounded-lg text-[10px] font-bold text-slate-700 flex justify-between bg-white border-r-4 border-emerald-500 shadow-sm leading-none items-center"><span>• ${w.name}</span><span class="text-[7px] opacity-40 uppercase font-mono italic ml-1 leading-none pt-1">${roleCode}</span></div>`
                             }).join('') || '<p class="text-[8px] text-slate-300 italic py-1 pr-2">شاغر</p>'}
                         </div>
                     </div>`).join('');
-                dashContainer.innerHTML += `<div class="bg-white p-7 rounded-[3.5rem] border border-emerald-50 shadow-lg text-right group animate-fade leading-none"><div class="flex items-center gap-3 mb-6"><div class="w-1.5 h-8 bg-emerald-600 rounded-full"></div><h3 class="font-black text-emerald-900 text-lg italic uppercase tracking-tighter">${u}</h3></div><div class="space-y-6">${shiftsContent}</div></div>`;
+                dashContainer.innerHTML += `<div class="bg-white p-7 rounded-[3.5rem] border border-emerald-50 shadow-lg text-right group animate-fade leading-none"><div class="flex items-center gap-3 mb-6 text-right"><div class="w-1.5 h-8 bg-emerald-600 rounded-full"></div><h3 class="font-black text-emerald-900 text-lg italic uppercase tracking-tighter leading-none pt-1">${u}</h3></div><div class="space-y-6">${shiftsContent}</div></div>`;
             });
 
             const fullContainer = document.getElementById('fullUnitsContainer'); fullContainer.innerHTML = '';
@@ -517,28 +543,34 @@
                     const ws = WORKERS.filter(w => w.unit === u && w.team === t);
                     if (ws.length === 0) return '';
                     const tid = `t-cont-${uIdx}-${tIdx}`;
-                    return `<div class="mb-2 border border-slate-50 rounded-2xl overflow-hidden"><div onclick="toggleAccordion('${tid}')" class="collapsible-header flex justify-between items-center p-4 bg-slate-50/50 text-slate-700 font-bold text-sm"><div class="flex items-center gap-2"><span class="w-2 h-2 bg-emerald-500 rounded-full"></span><span>فريق ${t === 'Misc' ? 'منتدبين/أخرى' : t}</span></div><span class="chevron text-[8px] opacity-30">▶</span></div><div id="${tid}" class="collapsible-content bg-white p-4 text-right"><div class="space-y-2">${ws.map(w => {
+                    return `<div class="mb-2 border border-slate-50 rounded-2xl overflow-hidden text-right"><div onclick="toggleAccordion('${tid}')" class="collapsible-header flex justify-between items-center p-4 bg-slate-50/50 text-slate-700 font-bold text-sm"><div class="flex items-center gap-2"><span>فريق ${t === 'Misc' ? 'أخرى' : t}</span></div><span class="chevron text-[8px] opacity-30 font-sans">▶</span></div><div id="${tid}" class="collapsible-content bg-white p-4 text-right"><div class="space-y-2">${ws.map(w => {
                         const roleCode = w.role === 'Operator' ? 'OP' : w.role === 'Driver' ? 'DR' : 'AS';
-                        return `<div onclick="openWorkerCard('${w.name}')" class="worker-clickable p-3 bg-slate-50 border rounded-xl flex justify-between items-center font-bold text-xs"><span>${w.name}</span><span class="text-[9px] px-2 py-0.5 bg-white border rounded opacity-60 italic uppercase">${roleCode}</span></div>`
+                        return `<div onclick="openWorkerCard('${w.name}')" class="worker-clickable p-3 bg-slate-50 border rounded-xl flex justify-between items-center font-bold text-xs"><span>${w.name}</span><span class="text-[9px] px-2 py-0.5 bg-white border rounded opacity-60 italic uppercase leading-none pt-1">${roleCode}</span></div>`
                     }).join('')}</div></div></div>`;
                 }).join('');
                 const uid = `u-cont-${uIdx}`;
-                fullContainer.innerHTML += `<div class="bg-white rounded-[2.5rem] border border-emerald-50 shadow-md overflow-hidden animate-fade"><div onclick="toggleAccordion('${uid}')" class="collapsible-header p-6 flex justify-between items-center border-b border-emerald-50 text-right"><h3 class="text-xl font-black text-emerald-950 uppercase tracking-tighter italic leading-none">${u}</h3><div class="flex items-center gap-3 leading-none"><span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-[9px] font-black italic uppercase leading-none">${WORKERS.filter(w=>w.unit===u).length} عمال</span><span class="chevron text-lg opacity-30 leading-none">▶</span></div></div><div id="${uid}" class="collapsible-content p-4 bg-slate-50/20">${teamsHtml}</div></div>`;
+                fullContainer.innerHTML += `<div class="bg-white rounded-[2.5rem] border border-emerald-50 shadow-md overflow-hidden animate-fade"><div onclick="toggleAccordion('${uid}')" class="collapsible-header p-6 flex justify-between items-center border-b border-emerald-50 text-right"><h3 class="text-xl font-black text-emerald-950 uppercase tracking-tighter italic leading-none pt-1">${u}</h3><div class="flex items-center gap-3 leading-none"><span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-[9px] font-black italic uppercase leading-none">${WORKERS.filter(w=>w.unit===u).length} عمال</span><span class="chevron text-lg opacity-30 leading-none font-sans">▶</span></div></div><div id="${uid}" class="collapsible-content p-4 bg-slate-50/20">${teamsHtml}</div></div>`;
             });
 
             renderAlphabeticalRegistry();
         }
 
-        function renderAlphabeticalRegistry() {
+        function handleSearch() {
+            renderAlphabeticalRegistry(document.getElementById('workerSearchInput').value);
+        }
+
+        function renderAlphabeticalRegistry(q = "") {
             const tableBody = document.getElementById('alphabeticalWorkerTable'); tableBody.innerHTML = '';
-            const sortedWorkers = [...WORKERS].sort((a, b) => a.name.localeCompare(b.name, 'ar'));
-            document.getElementById('workerCountBadge').textContent = sortedWorkers.length + " عاملاً";
-            sortedWorkers.forEach(w => {
+            const filtered = WORKERS.filter(w => w.name.includes(q) || w.unit.toLowerCase().includes(q.toLowerCase()));
+            const sorted = [...filtered].sort((a, b) => a.name.localeCompare(b.name, 'ar'));
+            document.getElementById('workerCountBadge').textContent = sorted.length + " عاملاً";
+            
+            sorted.forEach(w => {
                 const roleText = w.role === 'Operator' ? 'مشغل ألة' : w.role === 'Driver' ? 'سائق' : 'عامل مساعد';
                 const row = document.createElement('tr');
                 row.className = "border-b border-emerald-50 hover:bg-emerald-50/50 transition-all worker-clickable text-right";
                 row.onclick = () => openWorkerCard(w.name);
-                row.innerHTML = `<td class="p-4 font-black text-emerald-900">${w.name}</td><td class="p-4 text-[10px] text-slate-500 italic uppercase">${w.unit}</td><td class="p-4 text-center"><span class="bg-white border-2 border-emerald-100 text-emerald-700 px-3 py-1 rounded-xl text-xs font-black latin-nums italic">T ${w.team}</span></td><td class="p-4 text-right"><span class="text-[9px] font-black uppercase text-slate-400 italic">${roleText}</span></td>`;
+                row.innerHTML = `<td class="p-4 font-black text-emerald-900 text-right">${w.name}</td><td class="p-4 text-[10px] text-slate-500 italic uppercase text-right">${w.unit}</td><td class="p-4 text-center"><span class="bg-white border-2 border-emerald-100 text-emerald-700 px-3 py-1 rounded-xl text-xs font-black latin-nums italic leading-none pt-1">T ${w.team}</span></td><td class="p-4 text-right"><span class="text-[9px] font-black uppercase text-slate-400 italic leading-none">${roleText}</span></td>`;
                 tableBody.appendChild(row);
             });
         }
@@ -546,8 +578,7 @@
         function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('btn-' + tabId).classList.add('active');
-            ['dashboard', 'units', 'workers-registry'].forEach(t => { document.getElementById('tab-' + t + '-content').classList.add('hidden'); });
-            document.getElementById('tab-' + tabId + '-content').classList.remove('hidden');
+            ['dashboard', 'units', 'workers-registry'].forEach(t => { document.getElementById('tab-' + t + '-content').classList.toggle('hidden', t !== tabId); });
         }
 
         function openWorkerCard(workerName) {
@@ -555,8 +586,10 @@
             document.getElementById('m-name').textContent = w.name;
             document.getElementById('m-role-badge').textContent = w.role;
             document.getElementById('m-role-text').textContent = w.role === 'Operator' ? 'مشغل ألة (Operator)' : w.role === 'Driver' ? 'سائق (Driver)' : 'عامل مساعد (Assistant)';
-            document.getElementById('m-phone').textContent = w.phone || '';
-            document.getElementById('m-notes').textContent = w.notes || '--';
+            document.getElementById('m-unit-text').textContent = w.unit;
+            document.getElementById('m-team-text').textContent = "فريق " + w.team;
+            document.getElementById('m-phone').textContent = w.phone || 'غير مسجل';
+            document.getElementById('m-notes').textContent = w.notes || 'لا توجد ملاحظات إدارية مسجلة.';
             document.getElementById('workerModal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
