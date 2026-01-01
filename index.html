@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Panneaux d'Algérie - v3.8.0</title>
+    <title>Panneaux d'Algérie - v4.1.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
@@ -57,13 +57,17 @@
 
         .animate-fade { animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .search-input:focus {
+            box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.1);
+        }
     </style>
 </head>
 <body class="antialiased text-right">
 
     <div id="appContainer" class="min-h-screen flex flex-col">
         
-        <!-- Header -->
+        <!-- Header Section -->
         <header class="bg-white border-b border-emerald-100 pt-8 pb-12 px-4 text-center shadow-md relative">
             <div class="absolute top-0 left-0 w-full h-1.5 bg-[#064e3b]"></div>
             <div class="max-w-4xl mx-auto flex flex-col items-center">
@@ -75,19 +79,19 @@
                 
                 <div class="space-y-1">
                     <p class="text-lg font-bold text-emerald-800 leading-none">برنامج متابعة عمال الوحدات و الورديات</p>
-                    <p class="text-xs font-bold text-emerald-600 opacity-80 leading-none italic uppercase">Unit Workers and Shifts Monitoring Program</p>
-                    <p class="text-xs font-bold text-emerald-600 opacity-80 leading-none italic uppercase">Suivi des travailleurs des unités et des équipes</p>
+                    <p class="text-[11px] font-bold text-emerald-600 opacity-80 leading-none italic uppercase">Unit Workers and Shifts Monitoring Program</p>
+                    <p class="text-[11px] font-bold text-emerald-600 opacity-80 leading-none italic uppercase">Suivi des travailleurs des unités et des équipes</p>
                 </div>
             </div>
         </header>
 
         <main class="max-w-7xl mx-auto w-full px-4 pt-8 pb-16 flex-grow">
             
-            <!-- Live Banner -->
+            <!-- Real-time Status Area -->
             <div class="mb-10 bg-emerald-900 rounded-[3.5rem] p-8 text-white shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8 border-b-8 border-yellow-500">
                 <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
                 <div class="relative z-10 text-center md:text-right">
-                    <div class="flex items-center gap-2 mb-1 justify-center md:justify-start text-emerald-300 font-black uppercase text-[9px] tracking-widest">
+                    <div class="flex items-center gap-2 mb-1 justify-center md:justify-start text-emerald-300 font-black uppercase text-[9px] tracking-widest leading-none">
                         <span class="w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
                         <span>LIVE NOW (REAL-TIME)</span>
                     </div>
@@ -97,7 +101,7 @@
 
                 <div class="relative z-10 bg-white/5 backdrop-blur-md px-10 py-6 rounded-[2.5rem] border border-white/10 flex flex-col items-center min-w-[280px] shadow-inner text-center">
                     <span class="text-emerald-200 font-bold text-[10px] mb-1 uppercase tracking-widest opacity-80 leading-none">الفريق العامل حالياً</span>
-                    <div id="activeTeamNow" class="text-8xl font-black text-yellow-400 tracking-tighter drop-shadow-md leading-none py-2 italic font-sans">--</div>
+                    <div id="activeTeamNow" class="text-8xl font-black text-yellow-400 tracking-tighter drop-shadow-md leading-none py-2 italic font-sans uppercase">--</div>
                     <div id="activeShiftNow" class="mt-1 px-4 py-0.5 bg-yellow-400 text-emerald-900 rounded-full font-black text-[10px] uppercase tracking-widest leading-none pt-1">--</div>
                 </div>
             </div>
@@ -111,14 +115,15 @@
                 </div>
             </div>
 
-            <!-- Dashboard Content -->
+            <!-- Tab: Dashboard -->
             <div id="tab-dashboard-content" class="animate-fade space-y-12">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 text-right">
                     <div class="lg:col-span-4 bg-white p-7 rounded-[3rem] border border-emerald-100 shadow-sm">
                         <label class="block text-[10px] font-black text-slate-400 mb-3 uppercase tracking-widest leading-none mr-2 italic">معاينة اليوم الصناعي</label>
                         <input type="date" id="dateInput" onchange="refreshUI()" class="w-full p-4 rounded-2xl border-2 border-slate-50 bg-slate-50 font-black text-xl text-center focus:border-emerald-700 outline-none transition-all latin-nums">
-                        <div id="dateTextDisplay" class="mt-4 text-center font-bold text-emerald-800 text-[11px] italic leading-none latin-nums"></div>
+                        <div id="dateTextDisplay" class="mt-4 text-center font-bold text-emerald-800 text-[11px] italic leading-none latin-nums pt-1"></div>
                     </div>
+                    <!-- Sequential Shifts Vertical Order -->
                     <div id="shiftGrid" class="lg:col-span-8 flex flex-col gap-3"></div>
                 </div>
 
@@ -130,12 +135,12 @@
                 <div id="dashboardUnitsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-right"></div>
             </div>
 
-            <!-- Units Detailed -->
+            <!-- Tab: Units Detailed -->
             <div id="tab-units-content" class="hidden animate-fade space-y-6 text-right">
                 <div id="fullUnitsContainer" class="space-y-4 max-w-4xl mx-auto"></div>
             </div>
 
-            <!-- Workers Registry -->
+            <!-- Tab: Workers Registry -->
             <div id="tab-workers-registry-content" class="hidden animate-fade space-y-8 text-right">
                 <div class="bg-white rounded-[3rem] border border-emerald-100 shadow-xl overflow-hidden">
                     <div class="p-8 bg-emerald-50 border-b border-emerald-100 flex flex-col md:flex-row justify-between items-center gap-6">
@@ -146,17 +151,17 @@
                         
                         <div class="relative w-full md:w-80">
                             <input type="text" id="workerSearchInput" oninput="handleSearch()" placeholder="بحث عن اسم عامل..." class="search-input w-full p-4 pr-12 rounded-2xl border-2 border-emerald-100 bg-white text-sm font-bold focus:border-emerald-600 focus:outline-none transition-all shadow-inner text-right font-sans">
-                            <div class="absolute inset-y-0 right-0 flex items-center pr-4 text-emerald-500 pointer-events-none text-xl">🔍</div>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-4 text-emerald-500 pointer-events-none text-xl leading-none">🔍</div>
                         </div>
                     </div>
                     <div class="overflow-x-auto text-right font-sans">
                         <table class="w-full text-right border-collapse min-w-[600px]">
                             <thead>
-                                <tr class="bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-widest border-b border-emerald-50 text-right">
-                                    <th class="p-5 font-black italic">اسم العامل</th>
-                                    <th class="p-5 text-right font-black italic">الوحدة</th>
-                                    <th class="p-5 text-center font-black italic">الفريق</th>
-                                    <th class="p-5 text-right font-black italic">الوظيفة</th>
+                                <tr class="bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-widest border-b border-emerald-50 text-right italic">
+                                    <th class="p-5 font-black">اسم العامل</th>
+                                    <th class="p-5 text-right font-black">الوحدة</th>
+                                    <th class="p-5 text-center font-black">الفريق</th>
+                                    <th class="p-5 text-right font-black">الوظيفة</th>
                                 </tr>
                             </thead>
                             <tbody id="alphabeticalWorkerTable" class="text-sm font-bold text-slate-700"></tbody>
@@ -172,39 +177,39 @@
                 <div class="p-8 bg-emerald-900 text-white flex justify-between items-start text-right relative">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
                     <div class="relative z-10 text-right">
-                        <span id="m-role-badge" class="px-2 py-0.5 rounded text-[9px] font-black uppercase bg-emerald-600 mb-2 inline-block pt-1 leading-none italic shadow-sm">ROLE</span>
+                        <span id="m-role-badge" class="px-2 py-0.5 rounded text-[9px] font-black uppercase bg-emerald-600 mb-2 inline-block pt-1 leading-none italic shadow-sm leading-none">ROLE</span>
                         <h3 id="m-name" class="text-2xl font-black leading-tight italic">اسم العامل</h3>
-                        <p class="text-emerald-400 text-[9px] font-mono mt-1 opacity-70 tracking-widest uppercase italic leading-none pt-1">Personnel Profile Access</p>
+                        <p class="text-emerald-400 text-[9px] font-mono mt-1 opacity-70 tracking-widest uppercase italic leading-none pt-1">Official Personnel Record</p>
                     </div>
-                    <button onclick="closeModal('workerModal')" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition text-xl relative z-10 leading-none">✕</button>
+                    <button onclick="closeModal('workerModal')" class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition text-xl relative z-10 leading-none pt-1">✕</button>
                 </div>
-                <div class="modal-body-content space-y-4">
+                <div class="modal-body-content space-y-4 text-right">
                     <div class="grid grid-cols-2 gap-3 mb-2">
                         <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 shadow-sm text-center">
-                            <p class="text-[9px] font-black text-emerald-800/50 uppercase italic mb-1 leading-none pt-1">الوحدة</p>
+                            <p class="text-[9px] font-black text-emerald-800/50 uppercase italic mb-1 leading-none">الوحدة</p>
                             <p id="m-unit-text" class="font-black text-emerald-900 text-[11px] uppercase leading-tight pt-1">--</p>
                         </div>
                         <div class="p-4 bg-emerald-50 rounded-2xl border border-emerald-100 shadow-sm text-center">
-                            <p class="text-[9px] font-black text-emerald-800/50 uppercase italic mb-1 leading-none pt-1">الفريق</p>
+                            <p class="text-[9px] font-black text-emerald-800/50 uppercase italic mb-1 leading-none">الفريق</p>
                             <p id="m-team-text" class="font-black text-emerald-900 text-base uppercase leading-none pt-1 italic">--</p>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm text-right">
+                    <div class="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm text-right leading-none">
                         <div class="text-2xl">👷</div>
                         <div class="flex-1 text-right">
                             <p class="text-[9px] font-black text-slate-400 uppercase mb-1 italic leading-none pt-1">الوظيفة</p>
-                            <p id="m-role-text" class="font-black text-emerald-950 text-base leading-none">--</p>
+                            <p id="m-role-text" class="font-black text-emerald-950 text-base leading-none pt-1">--</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-4 p-4 bg-blue-50 rounded-2xl border border-blue-100 shadow-sm text-right">
+                    <div class="flex items-center gap-4 p-4 bg-blue-50 rounded-2xl border border-blue-100 shadow-sm text-right leading-none">
                         <div class="text-2xl">📞</div>
                         <div class="flex-1 text-right">
                             <p class="text-[9px] font-black text-blue-400 uppercase mb-1 italic leading-none pt-1">رقم الهاتف</p>
                             <p id="m-phone" class="font-black text-blue-900 text-xl leading-none font-mono tracking-widest latin-nums pt-1">--</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-4 p-4 bg-amber-50 rounded-2xl border border-amber-100 shadow-sm text-right">
+                    <div class="flex items-center gap-4 p-4 bg-amber-50 rounded-2xl border border-amber-100 shadow-sm text-right leading-none">
                         <div class="text-2xl">📝</div>
                         <div class="flex-1 text-right">
                             <p class="text-[9px] font-black text-amber-500 uppercase mb-1 italic leading-none pt-1">ملاحظات إدارية</p>
@@ -212,33 +217,32 @@
                         </div>
                     </div>
                 </div>
-                <div class="p-8 bg-slate-50 border-t border-slate-100">
+                <div class="p-8 bg-slate-50 border-t border-slate-100 text-center">
                     <button onclick="closeModal('workerModal')" class="w-full py-4 bg-emerald-900 text-white rounded-3xl font-black shadow-lg hover:bg-emerald-950 transition-all text-sm uppercase italic pt-1 leading-none">إغلاق البطاقة</button>
                 </div>
             </div>
         </div>
 
-        <!-- Dev Modal -->
         <div id="devModal" class="modal-fixed">
             <div class="modal-card text-center">
-                <div class="p-8 bg-slate-900 text-white relative">
+                <div class="p-8 bg-slate-900 text-white relative text-center">
                     <button onclick="closeModal('devModal')" class="absolute top-6 left-6 text-white/50 hover:text-white transition leading-none font-bold font-sans">✕</button>
                     <div class="w-20 h-20 rounded-full bg-slate-800 mx-auto mb-4 border-2 border-slate-700 flex items-center justify-center text-4xl shadow-inner">👨‍💻</div>
                     <h3 class="text-2xl font-black italic uppercase">Cheloufi Zakaria</h3>
-                    <p class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mt-1 italic leading-none">Mechanical Engineer</p>
+                    <p class="text-indigo-400 font-bold tracking-widest text-[10px] uppercase mt-1 italic leading-none pt-1">Mechanical Engineer</p>
                 </div>
-                <div class="p-8 space-y-4">
+                <div class="p-8 space-y-4 text-center">
                     <div class="bg-slate-50 p-6 rounded-[2.5rem] border border-slate-100 text-center space-y-4 shadow-inner">
                         <div class="font-black text-slate-800 italic uppercase leading-none pt-1 text-center font-sans">Panneaux d'Algérie</div>
                         <div class="h-px w-12 bg-slate-200 mx-auto"></div>
                         <div class="space-y-4 text-center">
                             <div class="flex flex-col items-center gap-1">
                                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic leading-none">Tel / WhatsApp</span>
-                                <a href="tel:0666434372" class="text-xl font-black text-slate-900 latin-nums tracking-widest leading-none">0666434372</a>
+                                <a href="tel:0666434372" class="text-xl font-black text-slate-900 latin-nums tracking-widest leading-none pt-1 font-sans">0666434372</a>
                             </div>
                             <div class="flex flex-col items-center gap-1">
                                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest italic leading-none">E-mail</span>
-                                <a href="mailto:zakaria.cheloufi@gmail.com" class="text-sm font-bold text-indigo-600 underline leading-none">zakaria.cheloufi@gmail.com</a>
+                                <a href="mailto:zakaria.cheloufi@gmail.com" class="text-sm font-bold text-indigo-600 underline leading-none pt-1 font-sans italic">zakaria.cheloufi@gmail.com</a>
                             </div>
                         </div>
                     </div>
@@ -250,183 +254,184 @@
         <footer class="bg-white text-slate-500 py-16 px-6 text-center border-t border-emerald-100 mt-auto">
             <div class="max-w-4xl mx-auto flex flex-col items-center text-center">
                 <div class="mb-12 bg-red-50 border border-red-100 p-6 rounded-[2.5rem] inline-block shadow-sm">
-                    <p class="text-red-700 font-black text-xs mb-1 italic leading-none uppercase tracking-widest pt-0.5">⚠️ Security Notice</p>
+                    <p class="text-red-700 font-black text-xs mb-1 italic leading-none uppercase tracking-widest">⚠️ Security Notice</p>
                     <p class="text-red-600 font-bold text-[10px] leading-relaxed max-w-sm">هذا البرنامج داخلي يخص شركة Panneaux d'Algérie ويمنع أي تعديل غير مصرح به.</p>
                 </div>
                 
                 <div class="flex flex-col items-center cursor-pointer group" onclick="openDevModal()">
                     <p class="text-[9px] font-bold text-slate-400 mb-1 leading-none uppercase tracking-tighter italic">تم تصميم وتطوير النظام بواسطة المهندس الميكانيكي</p>
-                    <p class="text-[11px] font-black text-slate-950 uppercase tracking-widest leading-none group-hover:text-emerald-700 transition-colors pt-0.5">شلوفي زكريا</p>
+                    <p class="text-[11px] font-black text-slate-950 uppercase tracking-widest leading-none group-hover:text-emerald-700 transition-colors pt-0.5 italic">شلوفي زكريا</p>
                     <div class="h-0.5 w-0 group-hover:w-16 bg-emerald-700 transition-all duration-300 mt-1"></div>
                 </div>
 
-                <div class="mt-8 bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-100 inline-flex items-center gap-3">
-                    <span class="text-[9px] font-black text-emerald-800 opacity-60 uppercase tracking-tighter italic">Update Level:</span>
-                    <span class="text-xs font-black text-emerald-700 latin-nums leading-none pt-1 italic">v3.8.0 - 27/12/2025</span>
+                <div class="mt-8 bg-emerald-50 px-4 py-2 rounded-xl border border-emerald-100 inline-flex items-center gap-3 shadow-sm">
+                    <span class="text-[9px] font-black text-emerald-800 opacity-60 uppercase tracking-tighter italic">Version Sync:</span>
+                    <span class="text-xs font-black text-emerald-700 latin-nums leading-none pt-1 italic">v4.1.0 - 30/12/2025</span>
                 </div>
             </div>
         </footer>
     </div>
 
     <script>
-        const UNITS = ["Energy plant", "Chipper", "Chip Silo", "Refiner", "Glue", "Forming", "Press", "Saw", "Sanding", "Melamine", "Quality Control", "Forklift drivers", "General Carpentry", "HSE"];
+        const UNITS = ["HSE", "Energy plant", "Chipper", "Chip Silo", "Refiner", "Glue", "Forming", "Press", "Saw", "Sanding", "Melamine", "Quality Control", "Forklift drivers", "General Carpentry"];
         
         const WORKERS = [
-            // Energy Plant
-            { name: "بوزانة عادل", team: "A", role: "Operator", unit: "Energy plant", phone: "", notes: "" },
-            { name: "بوطبة ضياء الدين", team: "B", role: "Operator", unit: "Energy plant", phone: "", notes: "" },
-            { name: "براكشي بلال", team: "C", role: "Operator", unit: "Energy plant", phone: "", notes: "" },
-            { name: "نصر مراد", team: "D", role: "Operator", unit: "Energy plant", phone: "", notes: "" },
-            { name: "بوطربوشة العياشي", team: "D", role: "Assistant", unit: "Energy plant", phone: "", notes: "" },
+            // HSE (SafetyEng)
+            { name: "شلوفي صلاح الدين", team: "A", role: "SafetyEng", unit: "HSE", phone: "0698550812", notes: "مهندس الوقاية والأمن الصناعي" },
+            { name: "غندور أنور", team: "B", role: "SafetyEng", unit: "HSE", phone: "0699171863", notes: "مهندس الوقاية والأمن الصناعي" },
+            { name: "بومنيجل نور الدين", team: "C", role: "SafetyEng", unit: "HSE", phone: "0664711166", notes: "مهندس الوقاية والأمن الصناعي" },
+            { name: "هميس أكرم", team: "D", role: "SafetyEng", unit: "HSE", phone: "0671502736", notes: "مهندس الوقاية والأمن الصناعي" },
+            // Energy Plant (Operator)
+            { name: "بوزانة عادل", team: "A", role: "Operator", unit: "Energy plant", phone: "0660212185", notes: "مشغل ألة" },
+            { name: "بوطبة ضياء الدين", team: "B", role: "Operator", unit: "Energy plant", phone: "0699929556", notes: "مشغل ألة" },
+            { name: "براكشي بلال", team: "C", role: "Operator", unit: "Energy plant", phone: "0671841459", notes: "مشغل ألة" },
+            { name: "نصر مراد", team: "D", role: "Operator", unit: "Energy plant", phone: "", notes: "مشغل ألة" },
+            { name: "بوطربوشة العياشي", team: "Misc", role: "Operator", unit: "Energy plant", phone: "0660946782", notes: "مشغل ألة - MISE" },
             // Chipper
-            { name: "حميزي محمد العربي", team: "A", role: "Operator", unit: "Chipper", phone: "", notes: "" },
-            { name: "كانون كمال الدين", team: "A", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "الوحش حسين", team: "A", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "لعناني الفادع", team: "A", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "العباسي نوري", team: "A", role: "Assistant", unit: "Chipper", phone: "", notes: "منتدب بموقع البناء" },
-            { name: "سلطاني نبيل", team: "A", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "بومازة أمين", team: "A", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "بحري محمد", team: "A", role: "Driver", unit: "Chipper", phone: "", notes: "" }, 
-            { name: "مناع سامي", team: "A", role: "Driver", unit: "Chipper", phone: "", notes: "" },
-            { name: "سلطاني رائد إسلام", team: "B", role: "Operator", unit: "Chipper", phone: "", notes: "" },
-            { name: "دلالو عبد الرؤوف", team: "B", role: "Operator", unit: "Chipper", phone: "", notes: "" }, // Converted to OP
-            { name: "وادي سبتي", team: "B", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "منصوري كريم", team: "B", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "داودي فواز", team: "B", role: "Operator", unit: "Chipper", phone: "", notes: "" }, // Converted to OP
-            { name: "بوخبيزة محمد", team: "B", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "قواسم جمال", team: "B", role: "Assistant", unit: "Chipper", phone: "", notes: "" }, // Moved from C to B
-            { name: "غوري محمد", team: "B", role: "Driver", unit: "Chipper", phone: "", notes: "" },
-            { name: "داودي فوزي", team: "B", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "سلطاني سماعيل", team: "C", role: "Operator", unit: "Chipper", phone: "", notes: "" },
-            { name: "شلوفي حكيم", team: "C", role: "Operator", unit: "Chipper", phone: "", notes: "" }, // Converted to OP
-            { name: "نموشي جمال", team: "C", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "خضير صالح", team: "C", role: "Assistant", unit: "Chipper", phone: "", notes: "" }, // Moved from B to C
-            { name: "بوعزة عبد الغفور", team: "C", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "الوحش رمزي", team: "C", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "منذر هشام", team: "C", role: "Driver", unit: "Chipper", phone: "", notes: "" },
-            { name: "منصوري أحمد", team: "C", role: "Driver", unit: "Chipper", phone: "", notes: "" },
-            { name: "ملوكي لخضر", team: "D", role: "Operator", unit: "Chipper", phone: "", notes: "" },
-            { name: "سلطاني منير", team: "D", role: "Operator", unit: "Chipper", phone: "", notes: "" }, // Converted to OP
-            { name: "ذيب محمود", team: "D", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "نموشي عبد الوهاب", team: "D", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "بوغابة فيصل", team: "D", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "بن حليمة سماعين", team: "D", role: "Assistant", unit: "Chipper", phone: "", notes: "" },
-            { name: "جاب الله عماد", team: "D", role: "Driver", unit: "Chipper", phone: "", notes: "" },
-            { name: "خضير عادل", team: "D", role: "Driver", unit: "Chipper", phone: "", notes: "" },
+            { name: "حميزي محمد العربي", team: "A", role: "Operator", unit: "Chipper", phone: "0541487247", notes: "مشغل ألة" },
+            { name: "الوحش حسين", team: "A", role: "Operator", unit: "Chipper", phone: "", notes: "مشغل ألة" },
+            { name: "كانون كمال", team: "A", role: "Assistant", unit: "Chipper", phone: "", notes: "عامل يدوي" },
+            { name: "سلطاني نبيل", team: "A", role: "Assistant", unit: "Chipper", phone: "0656356464", notes: "عامل يدوي" },
+            { name: "بومازة أمين", team: "A", role: "Assistant", unit: "Chipper", phone: "0668642965", notes: "عامل يدوي" },
+            { name: "لعناني الفادع", team: "A", role: "Assistant", unit: "Chipper", phone: "", notes: "عامل يدوي" },
+            { name: "العباسي النوري", team: "A", role: "Assistant", unit: "Chipper", phone: "", notes: "عامل يدوي" },
+            { name: "بحري محمد", team: "A", role: "Driver", unit: "Chipper", phone: "0671925079", notes: "سائق" },
+            { name: "مناع سامي", team: "A", role: "Driver", unit: "Chipper", phone: "0662556041", notes: "سائق" },
+            { name: "سلطاني رائد اسلام", team: "B", role: "Operator", unit: "Chipper", phone: "0698288691", notes: "مشغل ألة" },
+            { name: "دلالو عبد الرؤوف", team: "B", role: "Operator", unit: "Chipper", phone: "0669150171", notes: "مشغل ألة" },
+            { name: "منصوري كريم", team: "B", role: "Assistant", unit: "Chipper", phone: "", notes: "عامل يدوي" },
+            { name: "داودي فواز", team: "B", role: "Assistant", unit: "Chipper", phone: "", notes: "عامل يدوي" },
+            { name: "وادي السبتي", team: "B", role: "Assistant", unit: "Chipper", phone: "", notes: "عامل يدوي" },
+            { name: "بوخبيزة محمد", team: "B", role: "Assistant", unit: "Chipper", phone: "", notes: "عامل يدوي" },
+            { name: "قواسم جمال", team: "B", role: "Assistant", unit: "Chipper", phone: "", notes: "عامل يدوي" },
+            { name: "غوري محمد", team: "B", role: "Driver", unit: "Chipper", phone: "0661845885", notes: "سائق" },
+            { name: "داودي فوزي", team: "B", role: "Driver", unit: "Chipper", phone: "", notes: "سائق" },
+            { name: "سلطاني إسماعيل", team: "C", role: "Operator", unit: "Chipper", phone: "0696059013", notes: "مشغل ألة" },
+            { name: "شلوفي حكيم", team: "C", role: "Operator", unit: "Chipper", phone: "", notes: "مشغل ألة" },
+            { name: "بوعزة عبد الغفور", team: "C", role: "Assistant", unit: "Chipper", phone: "0670212336", notes: "عامل يدوي" },
+            { name: "نموشي جمال", team: "C", role: "Assistant", unit: "Chipper", phone: "", notes: "عامل يدوي" },
+            { name: "الوحش رمزي", team: "C", role: "Assistant", unit: "Chipper", phone: "", notes: "عامل يدوي" },
+            { name: "خضير صالح", team: "C", role: "Assistant", unit: "Chipper", phone: "0655974743", notes: "عامل يدوي" },
+            { name: "منصوري احمد", team: "C", role: "Driver", unit: "Chipper", phone: "", notes: "سائق" },
+            { name: "منذر هشام", team: "C", role: "Driver", unit: "Chipper", phone: "", notes: "سائق" },
+            { name: "ملوكي لخضر", team: "D", role: "Operator", unit: "Chipper", phone: "0658719911", notes: "مشغل ألة" },
+            { name: "سلطاني منير", team: "D", role: "Operator", unit: "Chipper", phone: "0657341084", notes: "مشغل ألة" },
+            { name: "نموشي عبد الوهاب", team: "D", role: "Assistant", unit: "Chipper", phone: "", notes: "عامل يدوي" },
+            { name: "بن حليمة إسماعيل", team: "D", role: "Assistant", unit: "Chipper", phone: "", notes: "عامل يدوي" },
+            { name: "بوغابة فيصل", team: "D", role: "Assistant", unit: "Chipper", phone: "0666060077", notes: "عامل يدوي" },
+            { name: "ذيب محمود", team: "D", role: "Assistant", unit: "Chipper", phone: "", notes: "عامل يدوي" },
+            { name: "خضير عادل", team: "D", role: "Driver", unit: "Chipper", phone: "0657249331", notes: "سائق" },
+            { name: "جاب الله عماد", team: "D", role: "Driver", unit: "Chipper", phone: "0657448665", notes: "سائق" },
             // Chip Silo
-            { name: "فزعي عبد الله", team: "A", role: "Operator", unit: "Chip Silo", phone: "", notes: "" },
-            { name: "قاسمي وهاب", team: "B", role: "Operator", unit: "Chip Silo", phone: "", notes: "" },
-            { name: "حمددي علاء الدين", team: "C", role: "Operator", unit: "Chip Silo", phone: "", notes: "" }, 
-            { name: "وادي فؤاد", team: "D", role: "Operator", unit: "Chip Silo", phone: "", notes: "" },
+            { name: "فزعي عبد الله", team: "A", role: "Assistant", unit: "Chip Silo", phone: "", notes: "عامل يدوي" },
+            { name: "قاسمي وهاب", team: "B", role: "Assistant", unit: "Chip Silo", phone: "", notes: "عامل يدوي" },
+            { name: "وادي فؤاد", team: "C", role: "Assistant", unit: "Chip Silo", phone: "", notes: "عامل يدوي" },
+            { name: "حمدي علاء الدين", team: "D", role: "Assistant", unit: "Chip Silo", phone: "", notes: "عامل يدوي" },
             // Refiner
-            { name: "عبد شوقي", team: "A", role: "Operator", unit: "Refiner", phone: "", notes: "" },
-            { name: "بليلي مراد", team: "A", role: "Assistant", unit: "Refiner", phone: "", notes: "منتدب بموقع البناء" },
-            { name: "نواري طراد", team: "B", role: "Operator", unit: "Refiner", phone: "", notes: "" },
-            { name: "جدي مراد", team: "B", role: "Assistant", unit: "Refiner", phone: "", notes: "منتدب بموقع البناء" },
-            { name: "كبير طارق", team: "C", role: "Operator", unit: "Refiner", phone: "", notes: "" },
-            { name: "تين عبد الكريم", team: "C", role: "Assistant", unit: "Refiner", phone: "", notes: "" },
-            { name: "بلبل رمزي", team: "D", role: "Operator", unit: "Refiner", phone: "", notes: "" },
-            { name: "نوري فوزي", team: "D", role: "Assistant", unit: "Refiner", phone: "", notes: "" },
-            { name: "هديمي العايش", team: "D", role: "Extra", unit: "Refiner", phone: "", notes: "عامل إضافي" },
+            { name: "عبد شوقي", team: "A", role: "Operator", unit: "Refiner", phone: "0674085060", notes: "مشغل ألة" },
+            { name: "بليلي مراد", team: "A", role: "Assistant", unit: "Refiner", phone: "0669206245", notes: "عامل يدوي" },
+            { name: "نواري طراد", team: "B", role: "Operator", unit: "Refiner", phone: "0697772983", notes: "مشغل ألة" },
+            { name: "جدي مراد", team: "B", role: "Assistant", unit: "Refiner", phone: "0562074182", notes: "عامل يدوي" },
+            { name: "كبير طارق", team: "C", role: "Operator", unit: "Refiner", phone: "0658432009", notes: "مشغل ألة" },
+            { name: "تين عبد الكريم", team: "C", role: "Assistant", unit: "Refiner", phone: "0659004516", notes: "عامل يدوي" },
+            { name: "بلبل رمزي", team: "D", role: "Operator", unit: "Refiner", phone: "0699029574", notes: "مشغل ألة" },
+            { name: "نوري فوزي", team: "D", role: "Assistant", unit: "Refiner", phone: "0698940347", notes: "عامل يدوي" },
+            { name: "هديمي العايش", team: "Misc", role: "Assistant", unit: "Refiner", phone: "0668827173", notes: "عامل يدوي" },
             // Glue
-            { name: "طويل حسام الدين", team: "A", role: "Operator", unit: "Glue", phone: "", notes: "" },
-            { name: "بضياف رمزي", team: "A", role: "Driver", unit: "Glue", phone: "", notes: "" }, // Driver
-            { name: "صحبي شكري", team: "A", role: "Assistant", unit: "Glue", phone: "", notes: "" },
-            { name: "العايش محمد شريف", team: "B", role: "Operator", unit: "Glue", phone: "0798313294", notes: "" },
-            { name: "بوجمعي محمد أمين", team: "B", role: "Assistant", unit: "Glue", phone: "", notes: "" },
-            { name: "خضير سالم", team: "B", role: "Driver", unit: "Glue", phone: "", notes: "" }, // Driver
-            { name: "زادي أيمن", team: "C", role: "Operator", unit: "Glue", phone: "", notes: "" },
-            { name: "سلطاني عز الدين", team: "C", role: "Assistant", unit: "Glue", phone: "", notes: "" },
-            { name: "حسيني عماد", team: "C", role: "Driver", unit: "Glue", phone: "", notes: "" }, // Driver
-            { name: "حمددي أيمن", team: "D", role: "Operator", unit: "Glue", phone: "", notes: "" },
-            { name: "حمداوي ع القادر", team: "D", role: "Driver", unit: "Glue", phone: "", notes: "" }, // Driver
-            { name: "مزريقي خالد", team: "D", role: "Assistant", unit: "Glue", phone: "", notes: "" },
+            { name: "طويل حسام الدين", team: "A", role: "Operator", unit: "Glue", phone: "0661461693", notes: "مشغل ألة" },
+            { name: "بضياف رمزي", team: "A", role: "Driver", unit: "Glue", phone: "", notes: "سائق" },
+            { name: "صحبي شكري", team: "A", role: "Assistant", unit: "Glue", phone: "0698087394", notes: "عامل يدوي" },
+            { name: "العايش محمد الشريف", team: "B", role: "Operator", unit: "Glue", phone: "0798313294", notes: "مشغل ألة" },
+            { name: "خضير سالم", team: "B", role: "Driver", unit: "Glue", phone: "0659726480", notes: "سائق" },
+            { name: "بوجمعي محمد لمين", team: "B", role: "Assistant", unit: "Glue", phone: "", notes: "عامل يدوي" },
+            { name: "زادي أيمن", team: "C", role: "Operator", unit: "Glue", phone: "0555217547", notes: "مشغل ألة" },
+            { name: "حسيني عماد", team: "C", role: "Driver", unit: "Glue", phone: "0657662501", notes: "سائق" },
+            { name: "سلطاني عز الدين", team: "C", role: "Assistant", unit: "Glue", phone: "0663923775", notes: "عامل يدوي" },
+            { name: "حمدي أيمن", team: "D", role: "Operator", unit: "Glue", phone: "0699298194", notes: "مشغل ألة" },
+            { name: "حمداوي عبد القادر", team: "D", role: "Driver", unit: "Glue", phone: "0770216201", notes: "سائق" },
+            { name: "مرزيقي خالد", team: "D", role: "Assistant", unit: "Glue", phone: "0659094511", notes: "عامل يدوي" },
             // Forming
-            { name: "طرفاية يزيد", team: "A", role: "Operator", unit: "Forming", phone: "", notes: "" },
-            { name: "هميسي محمد", team: "B", role: "Operator", unit: "Forming", phone: "", notes: "" },
-            { name: "حرياطي الهاشمي", team: "B", role: "Assistant", unit: "Forming", phone: "", notes: "" },
-            { name: "خريسي محمد", team: "C", role: "Operator", unit: "Forming", phone: "", notes: "" },
-            { name: "بومازة فوزي", team: "D", role: "Operator", unit: "Forming", phone: "", notes: "" },
+            { name: "هميسي محمد أمين", team: "A", role: "Operator", unit: "Forming", phone: "", notes: "مشغل ألة" },
+            { name: "حرياطي الهاشمي", team: "A", role: "Operator", unit: "Forming", phone: "", notes: "مشغل ألة" },
+            { name: "طرفاية يزيد", team: "B", role: "Operator", unit: "Forming", phone: "0697498659", notes: "مشغل ألة" },
+            { name: "خريسي محمد أمير", team: "C", role: "Operator", unit: "Forming", phone: "0541652298", notes: "مشغل ألة" },
+            { name: "بومازة فوزي", team: "D", role: "Operator", unit: "Forming", phone: "0672544451", notes: "مشغل ألة" },
             // Press
-            { name: "زايدي يحى", team: "A", role: "Operator", unit: "Press", phone: "", notes: "" },
-            { name: "دحدوح رائد", team: "B", role: "Operator", unit: "Press", phone: "", notes: "" },
-            { name: "أوشكديد عميروش", team: "C", role: "Operator", unit: "Press", phone: "", notes: "" },
-            { name: "شلوفي فتحي", team: "D", role: "Operator", unit: "Press", phone: "", notes: "" },
+            { name: "زايدي يحي", team: "A", role: "Operator", unit: "Press", phone: "0696650925", notes: "مشغل ألة" },
+            { name: "دحدوح رائد", team: "B", role: "Operator", unit: "Press", phone: "0657241060", notes: "مشغل ألة" },
+            { name: "اوشكديد عميروش", team: "C", role: "Operator", unit: "Press", phone: "0550099946", notes: "مشغل ألة" },
+            { name: "شلوفي فتحي", team: "D", role: "Operator", unit: "Press", phone: "0699653078", notes: "مشغل ألة" },
             // Saw
-            { name: "صايفية سمير", team: "A", role: "Operator", unit: "Saw", phone: "", notes: "" },
-            { name: "حذيري إبراهيم", team: "A", role: "Assistant", unit: "Saw", phone: "", notes: "" },
-            { name: "بوخبيزة وهاب", team: "A", role: "Assistant", unit: "Saw", phone: "", notes: "" },
-            { name: "بوذراع زكريا", team: "B", role: "Operator", unit: "Saw", phone: "", notes: "" },
-            { name: "عامر مجاني فيصل", team: "B", role: "Assistant", unit: "Saw", phone: "", notes: "" },
-            { name: "بخيتة محمد", team: "B", role: "Assistant", unit: "Saw", phone: "", notes: "" },
-            { name: "واشواش محمد لمين", team: "C", role: "Operator", unit: "Saw", phone: "", notes: "" },
-            { name: "بن وهب لطفي", team: "C", role: "Assistant", unit: "Saw", phone: "", notes: "" },
-            { name: "بليلي عمار", team: "C", role: "Assistant", unit: "Saw", phone: "", notes: "" },
-            { name: "بليلي فاتح", team: "D", role: "Operator", unit: "Saw", phone: "", notes: "" },
-            { name: "حذيري أحسن", team: "D", role: "Assistant", unit: "Saw", phone: "", notes: "" },
-            { name: "بوشواطة ع النور", team: "D", role: "Assistant", unit: "Saw", phone: "", notes: "" },
-            // Sanding (All Operators)
-            { name: "بلعيد محمد يسين", team: "A", role: "Operator", unit: "Sanding", phone: "", notes: "" },
-            { name: "ناصر شعيب", team: "B", role: "Operator", unit: "Sanding", phone: "", notes: "" },
-            { name: "مسعودي نور الدين", team: "B", role: "Operator", unit: "Sanding", phone: "", notes: "" },
-            { name: "حولي يحي", team: "C", role: "Operator", unit: "Sanding", phone: "", notes: "" },
-            { name: "العمري بلال", team: "C", role: "Operator", unit: "Sanding", phone: "", notes: "" },
-            { name: "معلق آسامة", team: "D", role: "Operator", unit: "Sanding", phone: "", notes: "" },
-            { name: "بن تومي محمد", team: "D", role: "Operator", unit: "Sanding", phone: "", notes: "" },
-            // Quality Control (Quality Engineers)
-            { name: "يوبي نور الدين", team: "A", role: "QualityEng", unit: "Quality Control", phone: "", notes: "" },
-            { name: "قواسم عبدو", team: "B", role: "QualityEng", unit: "Quality Control", phone: "", notes: "" },
-            { name: "منصري ص ماسينيسا", team: "C", role: "QualityEng", unit: "Quality Control", phone: "", notes: "" },
-            { name: "حو أحمد", team: "D", role: "QualityEng", unit: "Quality Control", phone: "", notes: "" },
-            { name: "معيز صبرينة", team: "Misc", role: "QualityEng", unit: "Quality Control", phone: "", notes: "" },
-            { name: "أوشكديد يسمينة", team: "Misc", role: "QualityEng", unit: "Quality Control", phone: "", notes: "" },
+            { name: "صايفية سمير", team: "A", role: "Operator", unit: "Saw", phone: "0662292789", notes: "مشغل ألة" },
+            { name: "حذيري إبراهيم", team: "A", role: "Assistant", unit: "Saw", phone: "0663453479", notes: "عامل يدوي" },
+            { name: "بوخبيزة وهاب", team: "A", role: "Assistant", unit: "Saw", phone: "", notes: "عامل يدوي" },
+            { name: "بوذراع زكريا", team: "B", role: "Operator", unit: "Saw", phone: "0671220352", notes: "مشغل ألة" },
+            { name: "عامر مجاني فيصل", team: "B", role: "Assistant", unit: "Saw", phone: "0668122932", notes: "عامل يدوي" },
+            { name: "بخيتة محمد رشيد", team: "B", role: "Assistant", unit: "Saw", phone: "", notes: "عامل يدوي" },
+            { name: "واشواش محمد لمين", team: "C", role: "Operator", unit: "Saw", phone: "0696031899", notes: "مشغل ألة" },
+            { name: "بن وهب لطفي", team: "C", role: "Assistant", unit: "Saw", phone: "0698773918", notes: "عامل يدوي" },
+            { name: "بليلي عمار", team: "C", role: "Assistant", unit: "Saw", phone: "", notes: "عامل يدوي" },
+            { name: "بليلي فاتح", team: "D", role: "Operator", unit: "Saw", phone: "0658639010", notes: "مشغل ألة" },
+            { name: "حذيري حسن", team: "D", role: "Assistant", unit: "Saw", phone: "0668919287", notes: "عامل يدوي" },
+            { name: "بوشواطة عبد النور", team: "D", role: "Assistant", unit: "Saw", phone: "0671542030", notes: "عامل يدوي" },
+            // Sanding
+            { name: "بلعيد محمد ياسين", team: "A", role: "Operator", unit: "Sanding", phone: "0556586343", notes: "مشغل ألة" },
+            { name: "ناصر شعيب", team: "B", role: "Operator", unit: "Sanding", phone: "0668306107", notes: "مشغل ألة" },
+            { name: "مسعودي نو الدين", team: "B", role: "Operator", unit: "Sanding", phone: "0663250363", notes: "مشغل ألة" },
+            { name: "حولي يحي", team: "C", role: "Operator", unit: "Sanding", phone: "0664310982", notes: "مشغل ألة" },
+            { name: "العمري بلال", team: "C", role: "Operator", unit: "Sanding", phone: "0658129563", notes: "مشغل ألة" },
+            { name: "معلق أسامة", team: "D", role: "Operator", unit: "Sanding", phone: "0696334982", notes: "مشغل ألة" },
+            { name: "بن تومي محمد", team: "D", role: "Operator", unit: "Sanding", phone: "0797702405", notes: "مشغل ألة" },
             // Melamine
-            { name: "سبتي هشام", team: "A", role: "Operator", unit: "Melamine", phone: "", notes: "" },
-            { name: "طيبي محمد الأمين", team: "A", role: "Operator", unit: "Melamine", phone: "", notes: "" },
-            { name: "تومي سفيان", team: "A", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "بن داية موسى", team: "A", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "عبد غرس صدام", team: "A", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "قرامتي سفيان", team: "A", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "صالحي صالح", team: "A", role: "Carpenter", unit: "General Carpentry", phone: "", notes: "" }, // Moved to A and role Carpenter
-            { name: "فريحي أيمن", team: "B", role: "Operator", unit: "Melamine", phone: "", notes: "" },
-            { name: "تريكي فارس", team: "B", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "بوثلجي وليد", team: "B", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "بن داية فوزي", team: "B", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "جواد يوسف", team: "B", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "حولي أيمن زكريا", team: "C", role: "Operator", unit: "Melamine", phone: "", notes: "" },
-            { name: "شلوفي نبيل", team: "C", role: "Operator", unit: "Melamine", phone: "", notes: "" },
-            { name: "ذيب هشام", team: "C", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "قرامتي سامي", team: "C", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "وادي حمزة", team: "C", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "خليل محمد الصالح", team: "C", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "مباركي هشام", team: "D", role: "Operator", unit: "Melamine", phone: "", notes: "" },
-            { name: "مشير توفيق", team: "D", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "سلطاني محمد", team: "D", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "ساسي نور الدين", team: "D", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
-            { name: "نواري ع الحميد", team: "D", role: "Assistant", unit: "Melamine", phone: "", notes: "" },
+            { name: "سبتي هشام", team: "A", role: "Operator", unit: "Melamine", phone: "0668800524", notes: "مشغل ألة" },
+            { name: "طيبي محمد الامين", team: "A", role: "Operator", unit: "Melamine", phone: "0697271036", notes: "مشغل ألة" },
+            { name: "قرامتي سفيان", team: "A", role: "Assistant", unit: "Melamine", phone: "", notes: "عامل يدوي" },
+            { name: "تومي سفيان", team: "A", role: "Assistant", unit: "Melamine", phone: "", notes: "عامل يدوي" },
+            { name: "بن داية موسى", team: "A", role: "Assistant", unit: "Melamine", phone: "", notes: "عامل يدوي" },
+            { name: "عبد غرس صدام", team: "A", role: "Assistant", unit: "Melamine", phone: "", notes: "عامل يدوي" },
+            { name: "فريحي أيمن", team: "B", role: "Operator", unit: "Melamine", phone: "0668053733", notes: "مشغل ألة" },
+            { name: "بوثلجي وليد", team: "B", role: "Assistant", unit: "Melamine", phone: "0666179932", notes: "عامل يدوي" },
+            { name: "تريكي فارس", team: "B", role: "Assistant", unit: "Melamine", phone: "0665446110", notes: "عامل يدوي" },
+            { name: "بن داية فوزي", team: "B", role: "Assistant", unit: "Melamine", phone: "", notes: "عامل يدوي" },
+            { name: "جواد يوسف", team: "B", role: "Assistant", unit: "Melamine", phone: "0662584751", notes: "عامل يدوي" },
+            { name: "حولي أيمن زكرياء", team: "C", role: "Operator", unit: "Melamine", phone: "0675336795", notes: "مشغل ألة" },
+            { name: "شلوفي نبيل", team: "C", role: "Operator", unit: "Melamine", phone: "0657970310", notes: "مشغل ألة" },
+            { name: "قرامتي سامي", team: "C", role: "Assistant", unit: "Melamine", phone: "0699903000", notes: "عامل يدوي" },
+            { name: "وادي حمزة", team: "C", role: "Assistant", unit: "Melamine", phone: "0669039141", notes: "عامل يدوي" },
+            { name: "ذيب هشام", team: "C", role: "Assistant", unit: "Melamine", phone: "0796869330", notes: "عامل يدوي" },
+            { name: "خليل محمد الصالح", team: "C", role: "Assistant", unit: "Melamine", phone: "", notes: "عامل يدوي" },
+            { name: "مباركي هشام", team: "D", role: "Operator", unit: "Melamine", phone: "", notes: "مشغل ألة" },
+            { name: "مشير توفيق", team: "D", role: "Assistant", unit: "Melamine", phone: "0668708877", notes: "عامل يدوي" },
+            { name: "سلطاني محمد", team: "D", role: "Assistant", unit: "Melamine", phone: "", notes: "عامل يدوي" },
+            { name: "نواري عبد الحميد", team: "D", role: "Assistant", unit: "Melamine", phone: "0662050602", notes: "عامل يدوي" },
+            { name: "ساسي نور الدين", team: "D", role: "Assistant", unit: "Melamine", phone: "0699419072", notes: "عامل يدوي" },
+            { name: "سبتي هشام", team: "Misc", role: "Assistant", unit: "Melamine", phone: "", notes: "عامل يدوي" },
+            // Quality Control
+            { name: "يوبي نور الدين", team: "A", role: "QualityEng", unit: "Quality Control", phone: "0658222336", notes: "مراقب جودة" },
+            { name: "قواسم عبدو", team: "B", role: "QualityEng", unit: "Quality Control", phone: "0666906553", notes: "مراقب جودة" },
+            { name: "منصري الصادق ماسينيسا", team: "C", role: "QualityEng", unit: "Quality Control", phone: "0668023216", notes: "مراقب جودة" },
+            { name: "حو أحمد", team: "D", role: "QualityEng", unit: "Quality Control", phone: "0772242615", notes: "مراقب جودة" },
+            { name: "معيز صبرينة", team: "Misc", role: "QualityEng", unit: "Quality Control", phone: "0550095188", notes: "مراقبة جودة" },
+            { name: "اوشكديد ياسمينة", team: "Misc", role: "QualityEng", unit: "Quality Control", phone: "0665175009", notes: "مراقبة جودة" },
             // Forklift drivers
-            { name: "هديمي إيهاب", team: "A", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
-            { name: "بوزينة أحسن", team: "A", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
-            { name: "مرزوق خير الدين", team: "A", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
-            { name: "تليلي يزيد", team: "B", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
-            { name: "جلال مسعود", team: "B", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
-            { name: "جندولي حمزة", team: "B", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
-            { name: "غاي سفيان", team: "C", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
-            { name: "قاسمي أمين", team: "C", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
-            { name: "خاتمي علاء الدين", team: "D", role: "Driver", unit: "Forklift drivers", phone: "", notes: "" },
-            // General Carpentry (Carpenters)
-            { name: "رمضاني ياسين", team: "A", role: "Carpenter", unit: "General Carpentry", phone: "", notes: "" },
-            { name: "تليلي مبروك", team: "B", role: "Carpenter", unit: "General Carpentry", phone: "", notes: "" },
-            { name: "ثابتي محمد", team: "B", role: "Carpenter", unit: "General Carpentry", phone: "", notes: "" },
-            { name: "داودي شكري", team: "C", role: "Carpenter", unit: "General Carpentry", phone: "", notes: "" },
-            { name: "فزعي موسى", team: "C", role: "Carpenter", unit: "General Carpentry", phone: "", notes: "" },
-            { name: "عبيدات حمادة", team: "D", role: "Carpenter", unit: "General Carpentry", phone: "", notes: "" },
-            { name: "قداش فارس", team: "D", role: "Carpenter", unit: "General Carpentry", phone: "", notes: "" },
-            // HSE (Safety Engineers)
-            { name: "شلوفي صلاح", team: "A", role: "SafetyEng", unit: "HSE", phone: "", notes: "" },
-            { name: "غندور أنور", team: "B", role: "SafetyEng", unit: "HSE", phone: "", notes: "" },
-            { name: "بومنجل نور الدين", team: "C", role: "SafetyEng", unit: "HSE", phone: "", notes: "" },
-            { name: "هميس أكرم", team: "D", role: "SafetyEng", unit: "HSE", phone: "", notes: "" }
+            { name: "هديمي ايهاب", team: "A", role: "Driver", unit: "Forklift drivers", phone: "0551925259", notes: "سائق" },
+            { name: "مرزوق خير الدين", team: "A", role: "Driver", unit: "Forklift drivers", phone: "0667669415", notes: "سائق" },
+            { name: "بوزينة حسان", team: "A", role: "Driver", unit: "Forklift drivers", phone: "0658772670", notes: "سائق" },
+            { name: "جلال مسعود", team: "B", role: "Driver", unit: "Forklift drivers", phone: "0655765384", notes: "سائق" },
+            { name: "تليلي يزيد", team: "B", role: "Driver", unit: "Forklift drivers", phone: "0666447425", notes: "سائق" },
+            { name: "قاسمي أمين", team: "C", role: "Driver", unit: "Forklift drivers", phone: "0664352336", notes: "سائق" },
+            { name: "جندولي حمزة", team: "C", role: "Driver", unit: "Forklift drivers", phone: "0676967302", notes: "سائق" },
+            { name: "خاتمي علاء الدين", team: "D", role: "Driver", unit: "Forklift drivers", phone: "0699808394", notes: "سائق" },
+            { name: "غاي سفيان", team: "D", role: "Driver", unit: "Forklift drivers", phone: "0670368503", notes: "سائق" },
+            // General Carpentry
+            { name: "صالحي صالح", team: "A", role: "Carpenter", unit: "General Carpentry", phone: "0667949241", notes: "نجار" },
+            { name: "رمضاني ياسين", team: "A", role: "Carpenter", unit: "General Carpentry", phone: "0660697508", notes: "نجار" },
+            { name: "تليلي مبروك", team: "B", role: "Carpenter", unit: "General Carpentry", phone: "0671315845", notes: "نجار" },
+            { name: "ثابتي محمد", team: "B", role: "Carpenter", unit: "General Carpentry", phone: "0664761715", notes: "نجار" },
+            { name: "داودي شكري", team: "C", role: "Carpenter", unit: "General Carpentry", phone: "0674069917", notes: "نجار" },
+            { name: "فزعي موسى", team: "C", role: "Assistant", unit: "General Carpentry", phone: "0676179086", notes: "عامل يدوي" },
+            { name: "عبيدات حمادة", team: "D", role: "Carpenter", unit: "General Carpentry", phone: "0672902912", notes: "نجار" },
+            { name: "قداش فارس", team: "D", role: "Assistant", unit: "General Carpentry", phone: "0669131645", notes: "عامل يدوي" }
         ];
 
         const REF_DATE = new Date('2025-12-12T00:00:00');
@@ -446,18 +451,21 @@
             setInterval(() => {
                 const now = new Date();
                 document.getElementById('liveClock').textContent = now.toLocaleTimeString('en-US', { hour12: false });
-                document.getElementById('liveDate').textContent = now.toLocaleDateString(latinLocale, { dateStyle: 'full' });
-                const hour = now.getHours();
-                let type = (hour >= 8 && hour < 16) ? 'صباحي' : (hour >= 16 || hour < 0) ? 'مسائي' : 'ليلي';
-                let calcDate = new Date(now);
-                if (hour < 8) calcDate.setDate(calcDate.getDate() - 1);
+                let logicalNow = new Date(now);
+                if (now.getHours() < 8) logicalNow.setDate(logicalNow.getDate() - 1);
+                document.getElementById('liveDate').textContent = logicalNow.toLocaleDateString(latinLocale, { dateStyle: 'full' });
+                const todayStr = logicalNow.toISOString().split('T')[0];
+                const h = now.getHours();
+                let type = '';
+                if (h >= 8 && h < 16) type = 'صباحي';
+                else if (h >= 16 || h < 0) type = 'مسائي';
+                else type = 'ليلي'; 
+
                 let activeLetter = '--';
-                TEAMS.forEach(t => { 
-                    if (getShiftInfo(t, calcDate.toLocaleDateString('en-CA')).type === type) activeLetter = t; 
-                });
+                TEAMS.forEach(t => { if (getShiftInfo(t, todayStr).type === type) activeLetter = t; });
                 document.getElementById('activeTeamNow').textContent = activeLetter;
                 let label = type === 'ليلي' ? 'S1 (ليل)' : type === 'صباحي' ? 'S2 (صباح)' : 'S3 (مساء)';
-                document.getElementById('activeShiftNow').textContent = label;
+                document.getElementById('activeShiftNow').textContent = label + " (" + type + ")";
             }, 1000);
         }
 
@@ -467,9 +475,10 @@
             const offsets = { 'A': 0, 'B': 2, 'C': 4, 'D': 6 };
             let cyclePos = (diffDays + offsets[team]) % 8;
             if (cyclePos < 0) cyclePos += 8;
-            if (cyclePos < 2) return { type: 'صباحي', class: 'shift-morning', s: 'S2', time: '08:00-16:00' };
-            if (cyclePos < 4) return { type: 'مسائي', class: 'shift-evening', s: 'S3', time: '16:00-00:00' };
-            if (cyclePos < 6) return { type: 'ليلي', class: 'shift-night', s: 'S1', time: '00:00-08:00' };
+
+            if (cyclePos < 2) return { type: 'صباحي', class: 'shift-morning', s: 'S2', time: '08:00/16:00' };
+            if (cyclePos < 4) return { type: 'مسائي', class: 'shift-evening', s: 'S3', time: '16:00/00:00' };
+            if (cyclePos < 6) return { type: 'ليلي', class: 'shift-night', s: 'S1', time: '00:00/08:00' };
             return { type: 'راحة', class: 'shift-rest', s: 'OFF', time: 'يوم راحة' };
         }
 
@@ -483,6 +492,7 @@
         function refreshUI() {
             const ds = document.getElementById('dateInput').value;
             document.getElementById('dateTextDisplay').textContent = new Date(ds + 'T00:00:00').toLocaleDateString(latinLocale, { dateStyle: 'full' });
+            
             const grid = document.getElementById('shiftGrid'); grid.innerHTML = '';
             const activeT = { 'صباحي': '--', 'مسائي': '--', 'ليلي': '--' };
             const order = ['صباحي', 'مسائي', 'ليلي', 'راحة'];
@@ -496,13 +506,17 @@
             order.forEach(type => {
                 const teams = teamsByShift[type] || [];
                 teams.forEach(item => {
-                    grid.innerHTML += `<div class="shift-card flex items-center justify-between p-4 rounded-2xl ${item.data.class} shadow-sm border animate-fade text-right"><div class="flex items-center gap-4"><span class="bg-white/50 px-2 py-0.5 rounded-lg font-black text-[9px] latin-nums">${item.data.s}</span><div class="font-black text-lg leading-none uppercase italic pt-1">${item.data.type}</div></div><div class="flex items-center gap-3"><span class="text-[9px] opacity-60 font-bold latin-nums pt-1 italic font-sans leading-none pt-0.5">${item.data.time}</span><div class="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center font-black text-xl italic pt-1">${item.letter}</div></div></div>`;
+                    grid.innerHTML += `<div class="shift-card flex items-center justify-between p-4 rounded-2xl ${item.data.class} shadow-sm border animate-fade text-right leading-none"><div class="flex items-center gap-4"><span class="bg-white/50 px-2 py-0.5 rounded-lg font-black text-[9px] latin-nums">${item.data.s}</span><div class="font-black text-lg leading-none uppercase italic pt-1">${item.data.type}</div></div><div class="flex items-center gap-3"><span class="text-[9px] opacity-60 font-bold latin-nums pt-1 italic font-sans leading-none pt-0.5 font-sans">${item.data.time}</span><div class="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center font-black text-xl italic pt-1 leading-none uppercase font-sans">${item.letter}</div></div></div>`;
                 });
             });
             const dashContainer = document.getElementById('dashboardUnitsContainer'); dashContainer.innerHTML = '';
             UNITS.forEach(u => {
                 const getW = (teamL) => WORKERS.filter(w => w.unit === u && w.team === teamL);
-                let shiftsContent = [{ label: 'S2 (صباح)', team: activeT['صباحي'], cls: 'text-blue-600 bg-blue-50', s: 'S2', time: '08:00/16:00' },{ label: 'S3 (مساء)', team: activeT['مسائي'], cls: 'text-amber-600 bg-amber-50', s: 'S3', time: '16:00/00:00' },{ label: 'S1 (ليل)', team: activeT['ليلي'], cls: 'text-purple-600 bg-purple-50', s: 'S1', time: '00:00/08:00' }].map(item => `
+                let shiftsContent = [
+                    { label: 'S2 (صباح)', team: activeT['صباحي'], cls: 'text-blue-600 bg-blue-50', s: 'S2', time: '08:00/16:00' },
+                    { label: 'S3 (مساء)', team: activeT['مسائي'], cls: 'text-amber-600 bg-amber-50', s: 'S3', time: '16:00/00:00' },
+                    { label: 'S1 (ليل)', team: activeT['ليلي'], cls: 'text-purple-600 bg-purple-50', s: 'S1', time: '00:00/08:00' }
+                ].map(item => `
                     <div class="space-y-2 text-right">
                         <div class="flex justify-between items-center text-[9px] font-black uppercase ${item.cls} p-2 rounded-xl border border-white/50 shadow-sm leading-none italic pt-3 pb-2">
                             <div class="flex flex-col items-start text-right">
@@ -517,8 +531,9 @@
                             }).join('') || '<p class="text-[8px] text-slate-300 italic py-1 pr-2">شاغر</p>'}
                         </div>
                     </div>`).join('');
-                dashContainer.innerHTML += `<div class="bg-white p-7 rounded-[3.5rem] border border-emerald-50 shadow-lg text-right group animate-fade leading-none"><div class="flex items-center gap-3 mb-6 text-right"><div class="w-1.5 h-8 bg-emerald-600 rounded-full"></div><h3 class="font-black text-emerald-900 text-lg italic uppercase tracking-tighter leading-none pt-1 italic uppercase">${u}</h3></div><div class="space-y-6 text-right">${shiftsContent}</div></div>`;
+                dashContainer.innerHTML += `<div class="bg-white p-7 rounded-[3.5rem] border border-emerald-50 shadow-lg text-right group animate-fade leading-none"><div class="flex items-center gap-3 mb-6 text-right"><div class="w-1.5 h-8 bg-emerald-600 rounded-full"></div><h3 class="font-black text-emerald-900 text-lg italic uppercase tracking-tighter leading-none pt-1 uppercase">${u}</h3></div><div class="space-y-6 text-right">${shiftsContent}</div></div>`;
             });
+
             const fullContainer = document.getElementById('fullUnitsContainer'); fullContainer.innerHTML = '';
             UNITS.forEach((u, uIdx) => {
                 let teamsHtml = TEAMS.concat(["Misc"]).map((t, tIdx) => {
@@ -532,6 +547,11 @@
             renderAlphabeticalRegistry();
         }
 
+        function getRoleCode(r) {
+            const map = { 'Operator':'OP', 'Driver':'DR', 'Extra':'EX', 'Carpenter':'CA', 'SafetyEng':'SE', 'QualityEng':'QE', 'Assistant':'AS' };
+            return map[r] || 'AS';
+        }
+
         function handleSearch() { renderAlphabeticalRegistry(document.getElementById('workerSearchInput').value); }
 
         function renderAlphabeticalRegistry(q = "") {
@@ -540,13 +560,18 @@
             const sorted = [...filtered].sort((a, b) => a.name.localeCompare(b.name, 'ar'));
             document.getElementById('workerCountBadge').textContent = sorted.length + " عاملاً";
             sorted.forEach(w => {
-                const roleText = w.role === 'Operator' ? 'مشغل ألة' : w.role === 'Driver' ? 'سائق' : w.role === 'Extra' ? 'عامل إضافي' : w.role === 'Carpenter' ? 'نجار' : w.role === 'SafetyEng' ? 'مهندس السلامة والوقاية' : w.role === 'QualityEng' ? 'مهندس جودة' : 'عامل مساعد';
+                const roleText = getRoleText(w.role);
                 const row = document.createElement('tr');
                 row.className = "border-b border-emerald-50 hover:bg-emerald-50/50 transition-all worker-clickable text-right font-sans";
                 row.onclick = () => openWorkerCard(w.name);
-                row.innerHTML = `<td class="p-4 font-black text-emerald-900 text-right font-tajawal">${w.name}</td><td class="p-4 text-[10px] text-slate-500 italic uppercase text-right font-tajawal">${w.unit}</td><td class="p-4 text-center leading-none pt-4"><span class="bg-white border-2 border-emerald-100 text-emerald-700 px-3 py-1 rounded-xl text-xs font-black italic font-sans leading-none">T ${w.team}</span></td><td class="p-4 text-right"><span class="text-[9px] font-black uppercase text-slate-400 pt-1 leading-none font-tajawal">${roleText}</span></td>`;
+                row.innerHTML = `<td class="p-4 font-black text-emerald-900 text-right font-tajawal">${w.name}</td><td class="p-4 text-[10px] text-slate-500 italic uppercase text-right font-tajawal">${w.unit}</td><td class="p-4 text-center leading-none pt-4 font-sans"><span class="bg-white border-2 border-emerald-100 text-emerald-700 px-3 py-1 rounded-xl text-xs font-black italic leading-none pt-1 font-sans uppercase">T ${w.team}</span></td><td class="p-4 text-right font-sans"><span class="text-[9px] font-black uppercase text-slate-400 pt-1 leading-none font-tajawal">${roleText}</span></td>`;
                 tableBody.appendChild(row);
             });
+        }
+
+        function getRoleText(r) {
+            const map = { 'Operator':'مشغل ألة', 'Driver':'سائق', 'Extra':'عامل إضافي', 'Carpenter':'نجار', 'SafetyEng':'مهندس السلامة والوقاية', 'QualityEng':'مهندس جودة', 'Assistant':'عامل مساعد' };
+            return map[r] || 'عامل مساعد';
         }
 
         function switchTab(tabId) {
@@ -559,7 +584,7 @@
             const w = WORKERS.find(x => x.name === workerName); if (!w) return;
             document.getElementById('m-name').textContent = w.name;
             document.getElementById('m-role-badge').textContent = w.role;
-            document.getElementById('m-role-text').textContent = w.role === 'Operator' ? 'مشغل ألة' : w.role === 'Driver' ? 'سائق' : w.role === 'Extra' ? 'عامل إضافي' : w.role === 'Carpenter' ? 'نجار' : w.role === 'SafetyEng' ? 'مهندس السلامة والوقاية' : w.role === 'QualityEng' ? 'مهندس جودة' : 'عامل مساعد';
+            document.getElementById('m-role-text').textContent = getRoleText(w.role);
             document.getElementById('m-unit-text').textContent = w.unit;
             document.getElementById('m-team-text').textContent = "فريق " + w.team;
             document.getElementById('m-phone').textContent = w.phone || 'غير مسجل';
